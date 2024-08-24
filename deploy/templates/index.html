@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> 🪰 Fly Species Prediction </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  </head>
+  <style>
+    h1 {
+      color: mediumseagreen;
+      text-align: center;
+      padding-top: 25px;
+    }
+    .warning {
+      color: red;
+      font-weight: bold;
+      text-align: center;
+    }
+    .card{
+      margin-left:410px;
+      margin-top: 20px;
+      text-align: center;
+      color: rgb(0, 0, 0);
+    }
+    .container{
+      background:#edf2f7a4;
+      font-weight: bold;
+      padding-bottom:10px;
+      border-radius: 15px;
+    }
+    .color-selection {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .color-selection .col {
+      width: 20%;
+    }
+    #fullpoint {
+      padding-top: 40px;
+      padding-left: 150px;
+    }
+    #radiopoint {
+      padding-top: 40px;
+    }
+    #gena_color {
+      padding-left: 300px;
+    }
+    .text-white {
+      font-size: 20px;
+      color: rgb(0 0 0) !important;
+	  text-align: center;
+	  
+    }
+    .card-title {
+      color: rgb(0, 0, 0);
+	  font-size: 40px; 
+	  
+    }
+	.mb-3{
+		padding-top: 30px;
+		text-align: center;	}
+		
+  </style>
+
+<body style="background-image: url('/static/licensed_image.png');">
+ <!--=======================navbar=====================================================-->
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container-fluid">
+	  <a class="navbar-brand" href="/">Fly Species Prediction</a>
+	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+		  <li class="nav-item">
+			<a class="nav-link active" aria-current="page" href="/">Home</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="#">Contact</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link disabled">About</a>
+		  </li>
+		</ul>
+	  </div>
+	  
+	</div>
+  </nav>
+
+
+
+
+
+
+  <div class="container my-3 mt-3">
+    <h1 class="text-success">Fly Species Using Wing Morphometric Identifying</h1>
+
+    <div class="mb-3">
+      <button id="minimalModeBtn" class="btn btn-primary"> Input with Colors</button>
+      <button id="fullModeBtn" class="btn btn-secondary"> Input without Colors</button>
+    </div>
+
+    <form action="{{ url_for('predict_species_family') }}" method="post">
+      <div id="minimalinput" class="section">
+        <div id="minimal-input">
+          <div class="row">
+            <div class="col-md-2">
+              <label for="a1-2">a(1-2):</label>
+              <input type="number" step="any" class="form-control" id="a1-2" name="a(1-2)" required>
+            </div>
+            <div class="col-md-2">
+              <label for="b2-3">b(2-3):</label>
+              <input type="number" step="any" class="form-control" id="b2-3" name="b(2-3)" required>
+            </div>
+            <div class="col-md-2">
+              <label for="c3-4">c(3-4):</label>
+              <input type="number" step="any" class="form-control" id="c3-4" name="c(3-4)" required>
+            </div>
+            <div class="col-md-2">
+              <label for="d4-5">d(4-5):</label>
+              <input type="number" step="any" class="form-control" id="d4-5" name="d(4-5)" required>
+            </div>
+            <div class="col-md-2">
+              <label for="e6-7">e(6-7):</label>
+              <input type="number" step="any" class="form-control" id="e6-7" name="e(6-7)" required>
+            </div>
+          </div>
+
+          <div class="color-selection mt-3">
+			<div class="col">
+			  <h5>Choose Gena color</h5>
+			  <select class="form-control" name="Gena color" required>
+				<option value="" disabled selected>Select Gena color</option>
+				<option value="Orange">Orange</option>
+				<option value="White">White</option>
+			  </select>
+			</div>
+			<div class="col">
+			  <h5>Choose Body color</h5>
+			  <select class="form-control" name="Body color" required>
+				<option value="" disabled selected>Select Body color</option>
+				<option value="Metallic green or blue">Metallic green or blue</option>
+				<option value="Cupreous">Cupreous</option>
+				<option value="Grey">Grey</option>
+			  </select>
+			</div>
+		  </div>
+        </div>
+		<div class="row mt-4">
+			<div class="col-md-12 text-center">
+			  <button type="submit" class="btn btn-success">Get Prediction</button>
+			  <button type="reset" class="btn btn-danger">Clear</button>
+			</div>
+		  </div>
+      </div>
+
+      <div id="fullpoint" class="section" style="display:none;">
+        <div id="full-input">      
+          <div class="row">			
+            <div class="col-md-2">
+              <label for="a(1-2)"> a(1-2) : </label>
+              <input type="number" step="any" id="a(1-2)" name="a(1-2)"  class="form-control" required/>
+            </div>
+            <div class="col-md-2">
+              <label for="b(2-3)"> b(2-3): </label>
+              <input type="number" step="any" id="b(2-3)" name="b(2-3)"  class="form-control" required/>
+            </div>			
+            <div class="col-md-2">
+              <label for="c(3-4)"> c(3-4): </label>
+              <input type="number" step="any" id="c(3-4)" name="c(3-4)"  class="form-control" required/>
+            </div>	
+            <div class="col-md-2">
+              <label for="d(4-5)"> d(4-5): </label>
+              <input type="number" step="any" id="d(4-5)" name="d(4-5)"  class="form-control" required/>
+            </div>	
+            <div class="col-md-2">
+              <label for="e(6-7)"> e(6-7): </label>
+              <input type="number" step="any" id="e(6-7)" name="e(6-7)"  class="form-control" required/>
+            </div>	
+          </div>
+
+          <div class="row">				
+            <div class="col-md-2">
+              <label for="f(7-10)"> f(7-10) : </label>
+              <input type="number" step="any" id="f(7-10)" name="f(7-10)"  class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <label for="g(9-10)"> g(9-10): </label>
+              <input type="number" step="any" id="g(9-10)" name="g(9-10)"  class="form-control" />
+            </div>			
+            <div class="col-md-2">
+              <label for="h(9-15)"> h(9-15): </label>
+              <input type="number" step="any" id="h(9-15)" name="h(9-15)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="i(15-16)"> i(15-16): </label>
+              <input type="number" step="any" id="i(15-16)" name="i(15-16)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="j(14-15)"> j(14-15): </label>
+              <input type="number" step="any" id="j(14-15)" name="j(14-15)"  class="form-control" />
+            </div>	
+          </div>
+
+          <div class="row">			
+            <div class="col-md-2">
+              <label for="k(13-14)"> k(13-14) : </label>
+              <input type="number" step="any" id="k(13-14)" name="k(13-14)"  class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <label for="l(13-17)"> l(13-17): </label>
+              <input type="number" step="any" id="l(13-17)" name="l(13-17)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="m(17-18)"> m(17-18) : </label>
+              <input type="number" step="any" id="m(17-18)" name="m(17-18)"  class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <label for="n(1-18)"> n(1-18): </label>
+              <input type="number" step="any" id="n(1-18)" name="n(1-18)"  class="form-control" />
+            </div>			
+            <div class="col-md-2">
+              <label for="o(2-13)"> o(2-13): </label>
+              <input type="number" step="any" id="o(2-13)" name="o(2-13)"  class="form-control" />
+            </div>	
+          </div>
+
+          <div class="row">		
+            <div class="col-md-2">
+              <label for="p(3-12)"> p(3-12): </label>
+              <input type="number" step="any" id="p(3-12)" name="p(3-12)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="q(12-13)"> q(12-13): </label>
+              <input type="number" step="any" id="q(12-13)" name="q(12-13)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="r(5-12)"> r(5-12): </label>
+              <input type="number" step="any" id="r(5-12)" name="r(5-12)"  class="form-control" />
+            </div>		
+            <div class="col-md-2">
+              <label for="s(11-14)"> s(11-14) : </label>
+              <input type="number" step="any" id="s(11-14)" name="s(11-14)"  class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <label for="t(8-11)"> t(8-11): </label>
+              <input type="number" step="any" id="t(8-11)" name="t(8-11)"  class="form-control" />
+            </div>			
+          </div>
+        
+          <div class="row">
+            <div class="col-md-2">
+              <label for="u(7-8)"> u(7-8): </label>
+              <input type="number" step="any" id="u(7-8)" name="u(7-8)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="v(8-9)"> v(8-9): </label>
+              <input type="number" step="any" id="v(8-9)" name="v(8-9)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="w(11-12)"> w(11-12): </label>
+              <input type="number" step="any" id="w(11-12)" name="w(11-12)"  class="form-control" />
+            </div>	
+          </div>
+        </div>
+		<div class="row mt-4">
+			<div class="col-md-12 text-center">
+			  <button type="submit" class="btn btn-success">Get Prediction</button>
+			  <button type="reset" class="btn btn-danger">Clear</button>
+			</div>
+		  </div>
+      </div>
+      
+      
+    </form>
+
+
+
+
+    {% if prediction_result %}
+    {% if prediction_result.success %}
+        <div id="resultContainer" class="card" style="width: auto; margin:auto;">
+            <div class="card-body">
+                <div class="row">
+                    <h5 class="card-title text-white">Prediction Result</h5>
+                    <p>Predicted Family: <strong>{{ prediction_result.family }}</strong></p>
+                    <p>Predicted Species: <strong>{{ prediction_result.species }}</strong></p>
+                    <p>Accuracy: <strong>{{ prediction_result.accuracy }}%</strong></p>
+                    
+                    {% if prediction_result.species %}
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <img src="{{ url_for('static', filename='picture/output/Head/' ~ prediction_result.species ~ '_HEAD.png') }}" 
+                                     alt="Head Image" class="img-fluid" style="width: 500px; height: 300px;">
+                            </div>
+                            <div>
+                                <img src="{{ url_for('static', filename='picture/output/Body/' ~ prediction_result.species ~ '.png') }}" 
+                                     alt="Body Image" class="img-fluid" style="width: 500px; height: 300px;">
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>Images are not available for this prediction.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            {{ prediction_result.error_message }}
+        </div>
+    {% endif %}
+{% endif %}
+  </div>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+ function clearResults() {
+    const resultContainer = document.getElementById('resultContainer');
+    if (resultContainer) {
+      resultContainer.innerHTML = '';
+      resultContainer.style.display = 'none';
+    }
+  }
+
+  function showSection(sectionId) {
+    document.getElementById('minimalinput').style.display = sectionId === 'minimalinput' ? 'block' : 'none';
+    document.getElementById('fullpoint').style.display = sectionId === 'fullpoint' ? 'block' : 'none';
+    clearResults();
+  }
+
+  document.getElementById('minimalModeBtn').addEventListener('click', function() {
+    showSection('minimalinput');
+  });
+
+  document.getElementById('fullModeBtn').addEventListener('click', function() {
+    showSection('fullpoint');
+  });
+
+  // Hide all sections by default
+  document.getElementById('minimalinput').style.display = 'none';
+  document.getElementById('fullpoint').style.display = 'none';
+
+  // Hide all sections by default
+  document.getElementById('minimalinput').style.display = 'none';
+  document.getElementById('fullpoint').style.display = 'none';
+
+    // Handle form submission
+ document.getElementById('predictionForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  let formData = new FormData(this);
+  
+  // เพิ่มข้อมูลเกี่ยวกับโหมดที่ใช้
+  if (document.getElementById('minimalinput').style.display !== 'none') {
+    formData.append('mode', 'minimal');
+  } else {
+    formData.append('mode', 'full');
+  }
+
+  fetch(this.action, {
+    method: 'POST',
+    body: formData,
+  })
+  .then(response => response.text())
+  .then(html => {
+    document.getElementById('resultContainer').innerHTML = html;
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+});
+  </script>
+</body>
+</html>
+
+
