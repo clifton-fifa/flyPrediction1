@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import numpy as np
 import pandas as pd
 import joblib
@@ -67,22 +67,16 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template("index2.html")
 
 @app.route("/predict", methods=['POST'])
 def predict_species_family():
     try:
         logging.debug(f"Received form data: {request.form}")
-        
-        mode = request.form.get('mode', 'full')
+
         measurements = {}
-        
-        if mode == 'minimal':
-            required_columns = shape_columns[:5] + categorical_columns
-        else:
-            required_columns = shape_columns + categorical_columns
-        
-        for key in required_columns:
+
+        for key in shape_columns + categorical_columns:
             if key in shape_columns:
                 try:
                     measurements[key] = float(request.form.get(key, 0))
@@ -90,38 +84,28 @@ def predict_species_family():
                     measurements[key] = 0
             elif key in categorical_columns:
                 measurements[key] = request.form.get(key, '')
-        
-        # Check for missing required data
-        missing_required = [col for col in required_columns if not measurements.get(col)]
-        if missing_required:
-            error_message = f"Missing required input data: {', '.join(missing_required)}"
-            logging.error(error_message)
-            return render_template('index.html', prediction_result={'success': False, 'error_message': error_message})
-        
+
         # Make predictions
-        family, family_probability = predict(measurements, family_model)
         species, species_probability = predict(measurements, species_model)
-        
-        logging.debug(f"Prediction result: Family={family}, Species={species}")
-        logging.debug(f"Probabilities: Family={family_probability}, Species={species_probability}")
-        
-        # Calculate overall accuracy as the average of family and species probabilities
-        accuracy = ((family_probability + species_probability) / 2) * 100
-        
+
+        logging.debug(f"Prediction result: Species={species}")
+        logging.debug(f"Probability: Species={species_probability}")
+
         result = {
             'success': True,
-            'family': family,
             'species': species,
-            'accuracy': round(accuracy, 2)
+            'probability': float(species_probability)
         }
-        
+
         logging.debug(f"Sending result to template: {result}")
-        return render_template('index.html', prediction_result=result)
-    
+        return jsonify(result)
+
     except Exception as e:
         error_message = f"An error occurred: {str(e)}"
         logging.error(error_message)
-        return render_template('index.html', prediction_result={'success': False, 'error_message': error_message})
+        return jsonify({'success': False, 'error_message': error_message})
+
+
 # Running the app
 if __name__ == "__main__":
     app.run(debug=True)

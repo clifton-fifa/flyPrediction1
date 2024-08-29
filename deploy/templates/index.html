@@ -11,6 +11,7 @@
       color: mediumseagreen;
       text-align: center;
       padding-top: 25px;
+      
     }
     .warning {
       color: red;
@@ -89,11 +90,6 @@
 	</div>
   </nav>
 
-
-
-
-
-
   <div class="container my-3 mt-3">
     <h1 class="text-success">Fly Species Using Wing Morphometric Identifying</h1>
 
@@ -113,21 +109,16 @@
             <div class="col-md-2">
               <label for="b2-3">b(2-3):</label>
               <input type="number" step="any" class="form-control" id="b2-3" name="b(2-3)" required>
-            </div>
-            <div class="col-md-2">
-              <label for="c3-4">c(3-4):</label>
-              <input type="number" step="any" class="form-control" id="c3-4" name="c(3-4)" required>
-            </div>
-            <div class="col-md-2">
-              <label for="d4-5">d(4-5):</label>
-              <input type="number" step="any" class="form-control" id="d4-5" name="d(4-5)" required>
-            </div>
+            </div>           
             <div class="col-md-2">
               <label for="e6-7">e(6-7):</label>
               <input type="number" step="any" class="form-control" id="e6-7" name="e(6-7)" required>
             </div>
+            <div class="col-md-2">
+              <label for="g(9-10)"> g(9-10): </label>
+              <input type="number" step="any" id="g(9-10)" name="g(9-10)"  class="form-control" />
+            </div>
           </div>
-
           <div class="color-selection mt-3">
 			<div class="col">
 			  <h5>Choose Gena color</h5>
@@ -275,45 +266,40 @@
       
       
     </form>
+  
 
-
-
-
-    {% if prediction_result %}
-    {% if prediction_result.success %}
-        <div id="resultContainer" class="card" style="width: auto; margin:auto;">
-            <div class="card-body">
-                <div class="row">
-                    <h5 class="card-title text-white">Prediction Result</h5>
-                    <p>Predicted Family: <strong>{{ prediction_result.family }}</strong></p>
-                    <p>Predicted Species: <strong>{{ prediction_result.species }}</strong></p>
-                    <p>Accuracy: <strong>{{ prediction_result.accuracy }}%</strong></p>
+          
+<section id="results" class="section" style="display:none;">
+    <div class="container">
+        {% if prediction_result and prediction_result.success %}
+            <div id="resultContainer" class="card" style="width: 100%; margin:auto; max-width: 1000px;">
+                <div class="card-body">
+                    <h5 class="card-title text-center" style="color: #333; font-size: 24px;">Prediction Result</h5>
+                    <p class="text-center" style="font-size: 20px;">Predicted Species: <strong>{{ prediction_result.species }}</strong></p>
                     
                     {% if prediction_result.species %}
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <img src="{{ url_for('static', filename='picture/output/Head/' ~ prediction_result.species ~ '_HEAD.png') }}" 
-                                     alt="Head Image" class="img-fluid" style="width: 500px; height: 300px;">
-                            </div>
-                            <div>
-                                <img src="{{ url_for('static', filename='picture/output/Body/' ~ prediction_result.species ~ '.png') }}" 
-                                     alt="Body Image" class="img-fluid" style="width: 500px; height: 300px;">
-                            </div>
+                        <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+                            <img src="{{ url_for('static', filename='picture/output/Head/' ~ prediction_result.species ~ '_HEAD.png') }}" 
+                                 alt="Head Image" class="img-fluid" style="max-width: 100%; height: auto; margin: 10px;">
+                            <img src="{{ url_for('static', filename='picture/output/Body/' ~ prediction_result.species ~ '.png') }}" 
+                                 alt="Body Image" class="img-fluid" style="max-width: 100%; height: auto; margin: 10px;">
                         </div>
                     {% else %}
-                        <p>Images are not available for this prediction.</p>
+                        <p class="text-center">Images are not available for this prediction.</p>
                     {% endif %}
                 </div>
             </div>
+        {% elif prediction_result and not prediction_result.success %}
+            <div class="alert alert-danger" role="alert">
+                {{ prediction_result.error_message }}
+            </div>
+        {% endif %}
+        <div class="mb-3 d-flex justify-content-center mt-3">
+            <button class="btn btn-success" id="newPredictionBtn">New Prediction</button>
         </div>
-    {% else %}
-        <div class="alert alert-danger" role="alert">
-            {{ prediction_result.error_message }}
-        </div>
-    {% endif %}
-{% endif %}
-  </div>
-
+    </div>
+</section>
+</body>
 
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
