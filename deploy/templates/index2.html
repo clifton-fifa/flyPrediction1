@@ -5,22 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fly Species Prediction</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
 
         html, 
         body {
             height: 100%;
             overflow-x: hidden;
-            background-image: url('/static/pexels-nathanjhilton-53014091.jpg');
+            background-image: url('/static/backiee-122987-landscape.jpg');
             background-size: cover; /* ทำให้ภาพครอบคลุมทั้งพื้นที่ */
             background-position: center; /* จัดตำแหน่งภาพอยู่ตรงกลาง */
             background-repeat: no-repeat; /* ห้ามทำให้ภาพซ้ำ */
             }
         h1.text-center.text-success {
         font-size: 3rem; /* ปรับขนาดฟอนต์ */
-        
+        color: white !important;
         }
-        .text-center{font-size: 1.3rem;}
+        .text-center{font-size: 1.3rem;
+            color: white; text-shadow: black 0.1em 0.1em 0.2em
+           }
 
         .btn-success{font-size: 1.3rem;}
 
@@ -70,6 +74,37 @@
         .section-with-padding {
     padding-top: 76px; /* 56px (navbar height) + 20px (extra padding) */
     }
+
+    /* กำหนดฟอนต์ Prompt ให้กับทุกองค์ประกอบภายใน section ที่ต้องการ */
+.section-overlay {
+    font-family: 'Prompt', sans-serif;
+}
+
+.section-with-padding {
+    font-family: 'Prompt', sans-serif;
+}
+
+.card-body {
+    font-family: 'Prompt', sans-serif;
+}
+
+.species-images {
+    display: flex;
+    gap: 1rem; /* ความห่างระหว่างรูปภาพ */
+    margin-bottom: 1rem; /* เว้นระยะห่างด้านล่างของรูปภาพ */
+    justify-content: center; /* จัดกลางรูปภาพแนวนอน */
+}
+
+.species-image {
+    width: 320px; /* ขยายขนาดของรูปภาพ */
+    height: 220px; /* ขยายขนาดของรูปภาพ */
+    object-fit: cover; /* ครอบคลุมพื้นที่รูปภาพ โดยรักษาสัดส่วน */
+    border-radius: 5px; /* เพิ่มความโค้งมนให้กับมุมของรูปภาพ */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้รูปภาพ */
+}
+
+
+    
         
     </style>
 </head>
@@ -117,8 +152,8 @@
             <div class="container">
                 <h2>Input Data</h2>
                 <div class="mb-3">
-                    <button class="btn btn-primary" id="minimalModeBtn">Minimal Input</button>
-                    <button class="btn btn-secondary" id="fullModeBtn">Full Input</button>
+                    <button class="btn btn-primary" id="minimalModeBtn">Input with Colors</button>
+                    <button class="btn btn-secondary" id="fullModeBtn">Input without Colors</button>
                 </div>
             
                 
@@ -152,11 +187,13 @@
                         <div class="col-md-6 mb-3">
                             <label for="bodyColor" class="form-label">Choose Body color:</label>
                             <select class="form-select" id="bodyColor">
-                                <option value="metallic">Metallic green or blue</option>
+                                <option value="metallic_green">Metallic green</option>
+                                <option value="metallic_blue">Metallic blue</option>
                                 <option value="cupreous">Cupreous</option>
                                 <option value="grey">Grey</option>
                             </select>
                         </div>
+                        
                     </div>
                 </div>
 
@@ -308,65 +345,88 @@
         <section class="section-overlay">
         <section id="species-info" class="section section-with-padding">
             <div class="container">
-                <h2>Species Information</h2>
+                <h2>Species Information For Prediction </h2>
                 <div class="card">
                     <div class="card-body">
-                        
-                        <h1>Fly Species</h1>
+                       
 
-                        <div class="species-section">
-                            <h2>Blow Flies</h2>
-                    
-                            <h3>Chrysomya megacephala (Fabricius)</h3>
-                            <div class="species-description">
-                                <p><strong>Description:</strong> Chrysomya megacephala, commonly known as the <strong>Big-headed Blow Fly</strong>, is a species of blow fly found in tropical and subtropical regions. They are characterized by their large head and metallic green to blue coloration.</p>
-                                <img src="https://example.com/images/chrysomya-megacephala.jpg" alt="Chrysomya megacephala">
-                            </div>
-                    
-                            <h3>Chrysomya rufifacies (Macquart)</h3>
-                            <div class="species-description">
-                                <p><strong>Description:</strong> Known as the <strong>Reddish Brown Blow Fly</strong>, Chrysomya rufifacies is distinguished by its reddish-brown color and metallic sheen. It is found in various parts of Asia and Australia and is known for its role in forensic entomology.</p>
-                                <img src="https://example.com/images/chrysomya-rufifacies.jpg" alt="Chrysomya rufifacies">
-                            </div>
-                    
-                            <h3>Chrysomya (Ceylonomyia) nigripes Aubertin</h3>
-                            <div class="species-description">
-                                <p><strong>Description:</strong> The <strong>Black-legged Chrysomya</strong> features a distinctive black coloration on its legs and a metallic green body. It is often found in tropical areas and plays a significant role in decomposing organic matter.</p>
-                                <img src="https://example.com/images/chrysomya-nigripes.jpg" alt="Chrysomya nigripes">
-                            </div>
-                    
-                            <h3>Lucilia cuprina (Wiedemann)</h3>
-                            <div class="species-description">
-                                <p><strong>Description:</strong> Known as the <strong>Copper Blow Fly</strong>, Lucilia cuprina is characterized by its metallic copper-green coloration. It is commonly found in Australia and is known for causing myiasis in livestock.</p>
-                                <img src="https://example.com/images/lucilia-cuprina.jpg" alt="Lucilia cuprina">
-                            </div>
-                    
-                            <h3>Hemipyrellia ligurriens (Wiedemann)</h3>
-                            <div class="species-description">
-                                <p><strong>Description:</strong> <strong>Hemipyrellia ligurriens</strong> is a blow fly with a distinctive black body and orange legs. It is prevalent in the Mediterranean region and is involved in the decomposition of organic material.</p>
-                                <img src="https://example.com/images/hemipyrellia-ligurriens.jpg" alt="Hemipyrellia ligurriens">
-                            </div>
-                        </div>
-                    
-                        <div class="species-section">
-                            <h2>House Fly</h2>
-                    
-                            <h3>Musca domestica Linnaeus</h3>
-                            <div class="species-description">
-                                <p><strong>Description:</strong> The <strong>House Fly</strong> is one of the most common and widespread flies. It has a grayish body with four dark stripes on its thorax. It is known for its role in spreading diseases and its adaptation to living in close association with humans.</p>
-                                <img src="https://example.com/images/musca-domestica.jpg" alt="Musca domestica">
-                            </div>
-                        </div>
-                    
-                        <div class="species-section">
-                            <h2>Flesh Fly</h2>
-                    
-                            <h3>Parasarcophaga (Liosarcophaga) dux Thomson</h3>
-                            <div class="species-description">
-                                <p><strong>Description:</strong> The <strong>Flesh Fly</strong> is distinguished by its gray body and black stripes. This species is commonly found in decomposing animal matter and is known for its role in forensic investigations.</p>
-                                <img src="https://example.com/images/parasarcophaga-dux.jpg" alt="Parasarcophaga dux">
-                            </div>
-                        </div>
+    <h4>1. Chrysomya megacephala (CM)</h4>
+    <div class="species-images">
+        <img src="\static\picture\output\Head\C. megacephala (CM)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
+        <img src="\static\picture\output\Body\C. megacephala (CM).png" alt="Body of Chrysomya megacephala" class="species-image">
+    </div>
+    <ul>
+        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันหัวโตมีขนาดกลางถึงใหญ่ สีตัวออกสีเขียวเหลืองมันเป็นเงา</li>
+        <li><strong>การแพร่กระจาย:</strong> พบได้ในเขตร้อนทั่วโลก โดยเฉพาะในเอเชียตะวันออกเฉียงใต้</li>
+        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นแมลงที่พบมากในซากศพ จึงมีบทบาทสำคัญในการตรวจสอบเวลาการตาย (Post-mortem interval)</li>
+    </ul>
+
+    <h4>2. Chrysomya nigripes (CN)</h4>
+    <div class="species-images">
+        <img src="\static\picture\output\Head\C. nigripes (CN)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
+        <img src="\static\picture\output\Body\C. nigripes (CN).png" alt="Body of Chrysomya megacephala" class="species-image">
+    </div>
+    <ul>
+        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันตัวเล็กถึงขนาดกลาง มีสีเขียวเข้ม</li>
+        <li><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและเขตอบอุ่นทั่วโลก</li>
+        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> มีความสำคัญในกรณีการสืบสวนในสถานที่เกิดเหตุที่เกี่ยวกับซากศพหรือสิ่งมีชีวิตที่เน่าเปื่อย</li>
+    </ul>
+
+    <h4>3. Chrysomya rufifacies (CR)</h4>
+    <div class="species-images">
+        <img src="\static\picture\output\Head\C. rufifacies (CR)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
+        <img src="\static\picture\output\Body\C. rufifacies (CR).png" alt="Body of Chrysomya megacephala" class="species-image">
+    </div>
+    <ul>
+        <li><strong>ลักษณะทั่วไป:</strong> มีสีเขียวทอง มีลักษณะขนสีดำที่ตัว ทำให้มีลักษณะเป็นเอกลักษณ์</li>
+        <li><strong>การแพร่กระจาย:</strong> พบได้ทั่วไปในภูมิภาคเขตร้อน</li>
+        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> แมลงนี้มักพบในซากศพ และสามารถใช้ในการประเมินเวลาการตายได้</li>
+    </ul>
+
+    <h4>4. Hemipyrellia ligurriens (HL)</h4>
+    <div class="species-images">
+        <img src="\static\picture\output\Head\H. ligurriens (HL)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
+        <img src="\static\picture\output\Body\H. ligurriens (HL).png" alt="Body of Chrysomya megacephala" class="species-image">
+    </div>
+    <ul>
+        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันตัวเล็กถึงกลาง มีสีเขียวมัน</li>
+        <li><strong>การแพร่กระจาย:</strong> พบได้ทั่วไปในเอเชียตะวันออกเฉียงใต้</li>
+        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> มักพบในซากศพเช่นเดียวกับสายพันธุ์อื่นๆ ที่กล่าวมา</li>
+    </ul>
+
+    <h4>5. Lucilia cuprina (LC)</h4>
+    <div class="species-images">
+        <img src="\static\picture\output\Head\L. cuprina (LC)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
+        <img src="\static\picture\output\Body\L. cuprina (LC).png" alt="Body of Chrysomya megacephala" class="species-image">
+    </div>
+    <ul>
+        <li><strong>ลักษณะทั่วไป:</strong> สีเขียวทองขนาดเล็ก</li>
+        <li><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและกึ่งเขตร้อน</li>
+        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นสายพันธุ์ที่เกี่ยวข้องกับการแพร่เชื้อโรคและการตรวจสอบสถานที่เกิดเหตุ</li>
+    </ul>
+
+    <h4>6. Musca domestica (MD)</h4>
+    <div class="species-images">
+        <img src="\static\picture\output\Head\M. domestica (MD)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
+        <img src="\static\picture\output\Body\M. domestica (MD).png" alt="Body of Chrysomya megacephala" class="species-image">
+    </div>
+    <ul>
+        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันบ้านทั่วไป ขนาดเล็ก มีสีเทา-ดำ</li>
+        <li><strong>การแพร่กระจาย:</strong> พบได้ทั่วโลก</li>
+        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นแมลงวันชนิดที่พบบ่อยที่สุดในบ้านและมีบทบาทในการแพร่เชื้อโรค</li>
+    </ul>
+
+    <h4>7. Phormia dux (PD)</h4>
+    <div class="species-images">
+        <img src="\static\picture\output\Head\P. dux (PD)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
+        <img src="\static\picture\output\Body\P. dux (PD).png" alt="Body of Chrysomya megacephala" class="species-image">
+    </div>
+    <ul>
+        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันสีดำ-น้ำเงิน ขนาดเล็ก</li>
+        <li><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและกึ่งเขตร้อน</li>
+        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> พบในซากศพและสามารถใช้ในการตรวจสอบเวลาการตายได้</li>
+    </ul>
+                       
                     </div>
                 </div>
             </div>
@@ -397,22 +457,11 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>  
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        document.getElementById('startPredictionBtn').addEventListener('click', function() {
-        document.querySelector('#input').scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-          document.getElementById('newPredictionBtn').addEventListener('click', function() {
-        document.querySelector('#input').scrollIntoView({
-            behavior: 'smooth'
-        });
-        document.getElementById('results').style.display = 'none'; // ซ่อนส่วนของผลลัพธ์
-        document.getElementById('input').style.display = 'block';  // แสดงส่วนของ input
-    });
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const minimalModeBtn = document.getElementById('minimalModeBtn');
             const fullModeBtn = document.getElementById('fullModeBtn');
             const minimalInput = document.getElementById('minimalInput');
@@ -421,167 +470,141 @@
             const clearBtn = document.getElementById('clearBtn');
             const resultsSection = document.getElementById('results');
             const inputSection = document.getElementById('input');
+            const newPredictionBtn = document.getElementById('newPredictionBtn');
+            const startPredictionBtn = document.getElementById('startPredictionBtn');
 
-            minimalModeBtn.addEventListener('click', function() {
-                minimalInput.style.display = 'block';
-                fullInput.style.display = 'none';
-                this.classList.add('btn-primary');
-                this.classList.remove('btn-secondary');
-                fullModeBtn.classList.add('btn-secondary');
-                fullModeBtn.classList.remove('btn-primary');
+            // Smooth scrolling for the 'startPredictionBtn' button
+            startPredictionBtn.addEventListener('click', function() {
+                document.querySelector('#input').scrollIntoView({ behavior: 'smooth' });
             });
 
-            fullModeBtn.addEventListener('click', function() {
-                minimalInput.style.display = 'none';
-                fullInput.style.display = 'block';
-                this.classList.add('btn-primary');
-                this.classList.remove('btn-secondary');
-                minimalModeBtn.classList.add('btn-secondary');
-                minimalModeBtn.classList.remove('btn-primary');
-            });
+          // Toggle between minimal and full input modes
+        minimalModeBtn.addEventListener('click', function () {
+            minimalInput.style.display = 'block';
+            fullInput.style.display = 'none';
+            this.classList.add('btn-primary');
+            this.classList.remove('btn-secondary');
+            fullModeBtn.classList.add('btn-secondary');
+            fullModeBtn.classList.remove('btn-primary');
 
-            predictBtn.addEventListener('click', function() {
-                resultsSection.style.display = 'flex';
-                inputSection.style.display = 'none';
-                document.getElementById('predictedSpecies').textContent = 'Example Species';
+            // Ensure hidden fields are not required
+            fullInput.querySelectorAll('input, select').forEach(input => input.required = false);
+            minimalInput.querySelectorAll('input, select').forEach(input => {
+                input.required = true;
+                input.value = ''; // Reset value to avoid submission issues
             });
+        });
 
-            clearBtn.addEventListener('click', function() {
-                document.querySelectorAll('input, select').forEach(el => el.value = '');
+        fullModeBtn.addEventListener('click', function () {
+            minimalInput.style.display = 'none';
+            fullInput.style.display = 'block';
+            this.classList.add('btn-primary');
+            this.classList.remove('btn-secondary');
+            minimalModeBtn.classList.add('btn-secondary');
+            minimalModeBtn.classList.remove('btn-primary');
+
+            // Ensure hidden fields are not required
+            minimalInput.querySelectorAll('input, select').forEach(input => input.required = false);
+            fullInput.querySelectorAll('input, select').forEach(input => {
+                input.required = true;
+                input.value = ''; // Reset value to avoid submission issues
             });
+        });
+
+
 
             // Smooth scrolling for navigation links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
                 });
             });
-        });
 
-        document.addEventListener('DOMContentLoaded', function() {
-    const predictBtn = document.getElementById('predictBtn');
-    const resultsSection = document.getElementById('results');
-    const inputSection = document.getElementById('input');
-    const newPredictionBtn = document.getElementById('newPredictionBtn');
-    
-    predictBtn.addEventListener('click', function() {
-        // Here you would typically collect form data and send it to your server
-        // For this example, we'll simulate a server response
-        const simulatedResponse = {
-            success: true,
-            species: 'C. megacephala'
-        };
-        
-        displayResults(simulatedResponse);
-    });
-    
-    newPredictionBtn.addEventListener('click', function() {
-        resultsSection.style.display = 'none';
-        inputSection.style.display = 'block';
-        // Reset form fields if necessary
-    });
-    
-    function displayResults(response) {
-        if (response.success) {
-            document.getElementById('predictedSpecies').textContent = response.species;
-            
-            const headImage = document.getElementById('headImage');
-            const bodyImage = document.getElementById('bodyImage');
-            const noImagesMessage = document.getElementById('noImagesMessage');
-            
-            if (response.species) {
-                headImage.src = `/static/picture/output/Head/${response.species}_HEAD.png`;
-                bodyImage.src = `/static/picture/output/Body/${response.species}.png`;
-                headImage.style.display = 'inline';
-                bodyImage.style.display = 'inline';
-                noImagesMessage.style.display = 'none';
-            } else {
-                headImage.style.display = 'none';
-                bodyImage.style.display = 'none';
-                noImagesMessage.style.display = 'block';
-            }
-            
-            document.getElementById('resultContainer').style.display = 'block';
-            document.getElementById('errorContainer').style.display = 'none';
+           // Prediction Logic
+predictBtn.addEventListener('click', function () {
+    const formData = new FormData();
+    let hasError = false;
+
+    // Determine the active input mode
+    const isMinimalMode = minimalInput.style.display === 'block';
+
+    // Append mode information to formData
+    formData.append('minimalMode', isMinimalMode.toString());
+
+    // Validate required fields for the active input mode
+    const activeInput = isMinimalMode ? minimalInput : fullInput;
+    activeInput.querySelectorAll('input[required], select[required]').forEach(input => {
+        if (!input.value) {
+            input.classList.add('is-invalid');
+            hasError = true;
         } else {
-            document.getElementById('errorContainer').textContent = response.error_message || 'An error occurred during prediction.';
-            document.getElementById('errorContainer').style.display = 'block';
-            document.getElementById('resultContainer').style.display = 'none';
-        }
-        
-        resultsSection.style.display = 'block';
-        inputSection.style.display = 'none';
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const predictBtn = document.getElementById('predictBtn');
-    const resultsSection = document.getElementById('results');
-    const inputSection = document.getElementById('input');
-    const newPredictionBtn = document.getElementById('newPredictionBtn');
-
-    predictBtn.addEventListener('click', function() {
-        // Collect form data
-        const formData = new FormData();
-        document.querySelectorAll('input, select').forEach(input => {
+            input.classList.remove('is-invalid');
             formData.append(input.id, input.value);
-        });
-
-        // Make a POST request to the backend to get the prediction
-        fetch('/predict', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => displayResults(data))
-        .catch(error => {
-            console.error('Error during prediction:', error);
-            document.getElementById('errorContainer').textContent = 'An error occurred during prediction.';
-            document.getElementById('errorContainer').style.display = 'block';
-        });
-    });
-
-    newPredictionBtn.addEventListener('click', function() {
-        resultsSection.style.display = 'none';
-        inputSection.style.display = 'block';
-    });
-
-    function displayResults(response) {
-        if (response.success) {
-            document.getElementById('predictedSpecies').textContent = response.species;
-            
-            const headImage = document.getElementById('headImage');
-            const bodyImage = document.getElementById('bodyImage');
-            const noImagesMessage = document.getElementById('noImagesMessage');
-            
-            if (response.species) {
-                headImage.src = `/static/picture/output/Head/${response.species}_HEAD.png`;
-                bodyImage.src = `/static/picture/output/Body/${response.species}.png`;
-                headImage.style.display = 'inline';
-                bodyImage.style.display = 'inline';
-                noImagesMessage.style.display = 'none';
-            } else {
-                headImage.style.display = 'none';
-                bodyImage.style.display = 'none';
-                noImagesMessage.style.display = 'block';
-            }
-            
-            document.getElementById('resultContainer').style.display = 'block';
-            document.getElementById('errorContainer').style.display = 'none';
-        } else {
-            document.getElementById('errorContainer').textContent = response.error_message || 'An error occurred during prediction.';
-            document.getElementById('errorContainer').style.display = 'block';
-            document.getElementById('resultContainer').style.display = 'none';
         }
-        
-        resultsSection.style.display = 'block';
-        inputSection.style.display = 'none';
+    });
+
+    if (hasError) {
+        alert('Please fill in all required fields.');
+        return;  // Stop execution if there's an error
     }
+
+    // Make a POST request to the backend to get the prediction
+    fetch('/predict', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => displayResults(data))
+    .catch(error => {
+        console.error('Error during prediction:', error);
+        document.getElementById('errorContainer').textContent = 'An error occurred during prediction.';
+        document.getElementById('errorContainer').style.display = 'block';
+    });
 });
+
+
+            // New prediction button handler
+            newPredictionBtn.addEventListener('click', function () {
+                resultsSection.style.display = 'none';
+                inputSection.style.display = 'block';
+                document.querySelectorAll('input, select').forEach(el => el.value = '');  // Clear form fields
+            });
+
+            // Display results logic
+            function displayResults(response) {
+                if (response.success) {
+                    document.getElementById('predictedSpecies').textContent = response.species;
+
+                    const headImage = document.getElementById('headImage');
+                    const bodyImage = document.getElementById('bodyImage');
+                    const noImagesMessage = document.getElementById('noImagesMessage');
+
+                    if (response.species) {
+                        headImage.src = `/static/picture/output/Head/${response.species}_HEAD.png`;
+                        bodyImage.src = `/static/picture/output/Body/${response.species}.png`;
+                        headImage.style.display = 'inline';
+                        bodyImage.style.display = 'inline';
+                        noImagesMessage.style.display = 'none';
+                    } else {
+                        headImage.style.display = 'none';
+                        bodyImage.style.display = 'none';
+                        noImagesMessage.style.display = 'block';
+                    }
+
+                    document.getElementById('resultContainer').style.display = 'block';
+                    document.getElementById('errorContainer').style.display = 'none';
+                } else {
+                    document.getElementById('errorContainer').textContent = response.error_message || 'An error occurred during prediction.';
+                    document.getElementById('errorContainer').style.display = 'block';
+                    document.getElementById('resultContainer').style.display = 'none';
+                }
+
+                resultsSection.style.display = 'block';
+                inputSection.style.display = 'none';
+            }
+        });
 
     </script>
-</body>
+    
 </html>

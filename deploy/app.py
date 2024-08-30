@@ -6,12 +6,15 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-# Loading the pre-trained models
-family_model = joblib.load('family_model.pkl')
-species_model = joblib.load('species_model.pkl')
-
-logging.debug(f"Family model features: {family_model.feature_names_in_}")
-logging.debug(f"Species model features: {species_model.feature_names_in_}")
+# Load the pre-trained models
+try:
+    family_model = joblib.load('family_model.pkl')
+    species_model = joblib.load('species_model.pkl')
+    logging.debug(f"Family model features: {family_model.feature_names_in_}")
+    logging.debug(f"Species model features: {species_model.feature_names_in_}")
+except Exception as e:
+    logging.error(f"Error loading models: {str(e)}")
+    raise e
 
 # Feature columns used in the models
 shape_columns = ['a(1-2)', 'b(2-3)', 'c(3-4)', 'd(4-5)', 'e(6-7)', 'f(7-10)', 
@@ -35,14 +38,33 @@ def rescale_abcd(row):
 # Preparing input data for the model
 def prepare_input_data(data):
     df = pd.DataFrame([data])
+    logging.debug(f"Initial DataFrame: \n{df}")
     
+    # Rescale specific columns
     df = df.apply(rescale_abcd, axis=1)
+    logging.debug(f"DataFrame after rescaling: \n{df}")
     
     # One-hot encoding for categorical columns
-    if 'Gena color' in df.columns and 'Body color' in df.columns:
-        df = pd.get_dummies(df, columns=categorical_columns)
+    df = pd.get_dummies(df, columns=categorical_columns)
+    logging.debug(f"DataFrame after one-hot encoding: \n{df}")
     
+    # List of all possible values for 'Gena color' and 'Body color'
+    all_possible_values = ['orange', 'white', 'metallic_green', 'metallic_blue', 'cupreous', 'grey']
+
+    # Ensure all possible one-hot encoded columns are present
+    for col in categorical_columns:
+        for value in all_possible_values:
+            col_name = f"{col}_{value}"
+            if col_name not in df.columns:
+                df[col_name] = 0  # Add missing color columns with value 0
+        # Ensure all expected shape columns are present, fill missing with zeros
+        for col in shape_columns:
+            if col not in df.columns:
+                df[col] = 0
+    
+    logging.debug(f"Final DataFrame ready for prediction: \n{df}")
     return df
+
 
 # Prediction function
 def predict(data, model):
@@ -72,11 +94,20 @@ def index():
 @app.route("/predict", methods=['POST'])
 def predict_species_family():
     try:
-        logging.debug(f"Received form data: {request.form}")
+        logging.debug(f"Incoming form data: {request.form}")
 
         measurements = {}
 
-        for key in shape_columns + categorical_columns:
+        # Determine the mode from the form data
+        mode = request.form.get('mode')
+
+        if mode == 'minimal':
+            required_fields = ['a(1-2)', 'b(2-3)', 'e(6-7)', 'g(9-10)', 'Gena color', 'Body color']
+        else:  # Assuming 'full' mode by default
+            required_fields = shape_columns + categorical_columns
+
+        # Collect and validate measurements
+        for key in required_fields:
             if key in shape_columns:
                 try:
                     measurements[key] = float(request.form.get(key, 0))
@@ -84,6 +115,11 @@ def predict_species_family():
                     measurements[key] = 0
             elif key in categorical_columns:
                 measurements[key] = request.form.get(key, '')
+
+        # Check if any required fields are missing
+        missing_fields = [key for key in required_fields if key not in measurements or not measurements[key]]
+        if missing_fields:
+            return jsonify({'success': False, 'error_message': f'Missing required field(s): {", ".join(missing_fields)}'})
 
         # Make predictions
         species, species_probability = predict(measurements, species_model)
@@ -104,6 +140,7 @@ def predict_species_family():
         error_message = f"An error occurred: {str(e)}"
         logging.error(error_message)
         return jsonify({'success': False, 'error_message': error_message})
+
 
 
 # Running the app
