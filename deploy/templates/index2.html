@@ -6,32 +6,28 @@
     <title>Fly Species Prediction</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
-
-        html, 
-        body {
+        /* Styles remain unchanged */
+        html, body {
             height: 100%;
             overflow-x: hidden;
             background-image: url('/static/backiee-122987-landscape.jpg');
-            background-size: cover; /* ทำให้ภาพครอบคลุมทั้งพื้นที่ */
-            background-position: center; /* จัดตำแหน่งภาพอยู่ตรงกลาง */
-            background-repeat: no-repeat; /* ห้ามทำให้ภาพซ้ำ */
-            }
-        h1.text-center.text-success {
-        font-size: 3rem; /* ปรับขนาดฟอนต์ */
-        color: white !important;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
-        .text-center{font-size: 1.3rem;
-            color: white; text-shadow: black 0.1em 0.1em 0.2em
-           }
-
-        .btn-success{font-size: 1.3rem;}
-
-        .btn-danger{font-size: 1.3rem;}
-
-
-
+        h1.text-center.text-success {
+            font-size: 3rem;
+            color: white !important;
+        }
+        .text-center {
+            font-size: 1.3rem;
+            color: white;
+            text-shadow: black 0.1em 0.1em 0.2em;
+        }
+        .btn-success, .btn-danger {
+            font-size: 1.3rem;
+        }
         .section {
             min-height: 100vh;
             display: flex;
@@ -43,69 +39,55 @@
             display: none;
         }
         .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;}
-      
-      .navbar-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar-nav {
             width: 100%;
             justify-content: center;
         }
-
         .navbar-nav .nav-item {
             margin: 0 10px;
         }
-
         .content {
-            padding-top: 56px; /* Adjust based on your navbar height */
-            
+            padding-top: 56px;
         }
-        /* การตั้งค่าให้ section มีพื้นหลังและกรอบ */
         .section-overlay {
             position: relative;
-            padding: 0px; /* ระยะห่างจากขอบของกรอบ */
-            background-color: rgba(255, 255, 255, 0.571); /* พื้นหลังขาวที่โปร่งใสเล็กน้อย */
-            border: 0px solid rgba(255, 255, 255, 0); /* กรอบสีดำโปร่งใส */
-            border-radius: 0px; /* มุมกรอบมน */
-            margin: 0px; /* ระยะห่างของ section จากขอบของ parent */
+            padding: 0px;
+            background-color: rgba(255, 255, 255, 0.571);
+            border: 0px solid rgba(255, 255, 255, 0);
+            border-radius: 0px;
+            margin: 0px;
+        }
+        .section-with-padding {
+            padding-top: 76px;
+        }
+        .section-overlay, .section-with-padding, .card-body {
+            font-family: 'Prompt', sans-serif;
+        }
+        .species-images {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+        .species-image {
+            width: 320px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .prediction-title {
+        text-align: center;
+        }
+        .prediction-text {
+        text-align: center;
         }
 
-        .section-with-padding {
-    padding-top: 76px; /* 56px (navbar height) + 20px (extra padding) */
-    }
-
-    /* กำหนดฟอนต์ Prompt ให้กับทุกองค์ประกอบภายใน section ที่ต้องการ */
-.section-overlay {
-    font-family: 'Prompt', sans-serif;
-}
-
-.section-with-padding {
-    font-family: 'Prompt', sans-serif;
-}
-
-.card-body {
-    font-family: 'Prompt', sans-serif;
-}
-
-.species-images {
-    display: flex;
-    gap: 1rem; /* ความห่างระหว่างรูปภาพ */
-    margin-bottom: 1rem; /* เว้นระยะห่างด้านล่างของรูปภาพ */
-    justify-content: center; /* จัดกลางรูปภาพแนวนอน */
-}
-
-.species-image {
-    width: 320px; /* ขยายขนาดของรูปภาพ */
-    height: 220px; /* ขยายขนาดของรูปภาพ */
-    object-fit: cover; /* ครอบคลุมพื้นที่รูปภาพ โดยรักษาสัดส่วน */
-    border-radius: 5px; /* เพิ่มความโค้งมนให้กับมุมของรูปภาพ */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาให้รูปภาพ */
-}
-
-
-    
-        
     </style>
 </head>
 <body>
@@ -117,92 +99,77 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#input">Input Data</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#species-info">Species Info</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact Us</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#input">Input Data</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#species-info">Species Info</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="content">
-        
         <section id="home" class="section">
             <div class="container">
-                <h1 class="text-center text-success"> Fly Species Using Wing 
-                Morphometric Identifying</h1>
+                <h1 class="text-center text-success">Fly Species Using Wing Morphometric Identifying</h1>
                 <p class="text-center">Welcome to our fly species prediction tool. Use the navigation menu to explore different sections.</p>
             </div>
             <div class="text-center mt-3">
                 <button class="btn btn-success" id="startPredictionBtn">Start Prediction</button>
             </div>
         </section>
-      
+
         <section class="section-overlay">
-        <section id="input" class="section section-with-padding">
-            <div class="container">
-                <h2>Input Data</h2>
-                <div class="mb-3">
-                    <button class="btn btn-primary" id="minimalModeBtn">Input with Colors</button>
-                    <button class="btn btn-secondary" id="fullModeBtn">Input without Colors</button>
-                </div>
-            
-                
-                <div id="minimalInput">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label for="a12" class="form-label">a(1-2):</label>
-                            <input type="number" class="form-control" id="a12">
+            <section id="input" class="section section-with-padding">
+                <div class="container">
+                    <input type="hidden" name="mode" id="modeInput">
+                    <h2>Input Data</h2>
+                    <div class="mb-3">
+                        <button class="btn btn-primary" id="minimalModeBtn">Input with Colors</button>
+                        <button class="btn btn-secondary" id="fullModeBtn">Input without Colors</button>
+                    </div>
+
+                    <div id="minimalInput">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="a12" class="form-label">a(1-2):</label>
+                                <input type="number" class="form-control" id="a12" name="a(1-2)">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="b23" class="form-label">b(2-3):</label>
+                                <input type="number" class="form-control" id="b23" name="b(2-3)">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="e67" class="form-label">e(6-7):</label>
+                                <input type="number" class="form-control" id="e67" name="e(6-7)">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="g910" class="form-label">g(9-10):</label>
+                                <input type="number" class="form-control" id="g910" name="g(9-10)">
+                            </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="b23" class="form-label">b(2-3):</label>
-                            <input type="number" class="form-control" id="b23">
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="e67" class="form-label">e(6-7):</label>
-                            <input type="number" class="form-control" id="e67">
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="g910" class="form-label">g(9-10):</label>
-                            <input type="number" class="form-control" id="g910">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="genaColor" class="form-label">Choose Gena color:</label>
+                                <select class="form-select" id="genaColor" name="Gena color">
+                                    <option value="orange">Orange</option>
+                                    <option value="white">White</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="bodyColor" class="form-label">Choose Body color:</label>
+                                <select class="form-select" id="bodyColor" name="Body color">
+                                    <option value="metallic_green">Metallic green</option>
+                                    <option value="metallic_blue">Metallic blue</option>
+                                    <option value="cupreous">Cupreous</option>
+                                    <option value="grey">Grey</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="genaColor" class="form-label">Choose Gena color:</label>
-                            <select class="form-select" id="genaColor">
-                                <option value="orange">Orange</option>
-                                <option value="white">White</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="bodyColor" class="form-label">Choose Body color:</label>
-                            <select class="form-select" id="bodyColor">
-                                <option value="metallic_green">Metallic green</option>
-                                <option value="metallic_blue">Metallic blue</option>
-                                <option value="cupreous">Cupreous</option>
-                                <option value="grey">Grey</option>
-                            </select>
-                        </div>
-                        
-                    </div>
-                </div>
 
-
-
-
-
-                <div id="fullInput" style="display:none;">
-                    <div class="row">			
+        <div id="fullInput" style="display:none;">
+          <div class="row">			
             <div class="col-md-2">
               <label for="a(1-2)"> a(1-2) : </label>
               <input type="number" step="any" id="a(1-2)" name="a(1-2)"  class="form-control" required/>
@@ -308,130 +275,39 @@
               <input type="number" step="any" id="w(11-12)" name="w(11-12)"  class="form-control" />
             </div>	
            </div>
-           </div>
-           </div>  
-            <div class="text-center mt-3">
-                    <button class="btn btn-success" id="predictBtn">Get Prediction</button>
-                    <button class="btn btn-danger" id="clearBtn">Clear</button>
-                </div>
-        </section>
+                    </div>
 
-        
-        <section id="results" class="section section-with-padding" style="display:none;">
-            <div class="container">
-                <div id="resultContainer" class="card" style="width: 100%; margin:auto; max-width: 1000px;">
-                    <div class="card-body">
-                        <h5 class="card-title text-center" style="color: #333; font-size: 24px;">Prediction Result</h5>
-                        <p class="text-center" style="font-size: 20px;">Predicted Species: <strong id="predictedSpecies"></strong></p>
-                        
-                        <div id="imageContainer" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
-                            <img id="headImage" alt="Head Image" class="img-fluid" style="max-width: 600px; height: 300px; margin: 10px;">
-                            <img id="bodyImage" alt="Body Image" class="img-fluid" style="max-width: 600px; height: 300px; margin: 10px;">
+                    <div class="text-center mt-3">
+                        <button class="btn btn-success" id="predictBtn">Get Prediction</button>
+                        <button class="btn btn-danger" id="clearBtn">Clear</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="results" class="section section-with-padding" style="display:none;">
+                <div class="container">
+                    <div id="resultContainer" class="card" style="width: 100%; margin:auto; max-width: 1000px;">
+                        <div class="card-body">
+                            <h5 class="card-title prediction-title" style="color: #333; font-size: 24px;"><b>Prediction Result</b></h5>
+                            <p class="prediction-text" style="font-size: 20px;">Predicted Species: <strong id="predictedSpecies" style="color: red;"></strong></p>
+
+                            <div id="imageContainer" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                <img id="headImage" alt="Head Image" class="img-fluid species-image">
+                                <img id="bodyImage" alt="Body Image" class="img-fluid species-image">
+                            </div>
+
+                            <p id="noImagesMessage" class="text-center" style="display: none;">Images are not available for this prediction.</p>
                         </div>
-                        
-                        <p id="noImagesMessage" class="text-center" style="display: none;">Images are not available for this prediction.</p>
+                    </div>
+
+                    <div id="errorContainer" class="alert alert-danger" role="alert" style="display: none;"></div>
+
+                    <div class="mb-3 d-flex justify-content-center mt-3">
+                        <button class="btn btn-success" id="newPredictionBtn">New Prediction</button>
                     </div>
                 </div>
-                
-                <div id="errorContainer" class="alert alert-danger" role="alert" style="display: none;"></div>
-                
-                <div class="mb-3 d-flex justify-content-center mt-3">
-                    <button class="btn btn-success" id="newPredictionBtn">New Prediction</button>
-                </div>
-            </div>
-        </section>
-        </section>
+            </section>
         
-        <section class="section-overlay">
-        <section id="species-info" class="section section-with-padding">
-            <div class="container">
-                <h2>Species Information For Prediction </h2>
-                <div class="card">
-                    <div class="card-body">
-                       
-
-    <h4>1. Chrysomya megacephala (CM)</h4>
-    <div class="species-images">
-        <img src="\static\picture\output\Head\C. megacephala (CM)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
-        <img src="\static\picture\output\Body\C. megacephala (CM).png" alt="Body of Chrysomya megacephala" class="species-image">
-    </div>
-    <ul>
-        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันหัวโตมีขนาดกลางถึงใหญ่ สีตัวออกสีเขียวเหลืองมันเป็นเงา</li>
-        <li><strong>การแพร่กระจาย:</strong> พบได้ในเขตร้อนทั่วโลก โดยเฉพาะในเอเชียตะวันออกเฉียงใต้</li>
-        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นแมลงที่พบมากในซากศพ จึงมีบทบาทสำคัญในการตรวจสอบเวลาการตาย (Post-mortem interval)</li>
-    </ul>
-
-    <h4>2. Chrysomya nigripes (CN)</h4>
-    <div class="species-images">
-        <img src="\static\picture\output\Head\C. nigripes (CN)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
-        <img src="\static\picture\output\Body\C. nigripes (CN).png" alt="Body of Chrysomya megacephala" class="species-image">
-    </div>
-    <ul>
-        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันตัวเล็กถึงขนาดกลาง มีสีเขียวเข้ม</li>
-        <li><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและเขตอบอุ่นทั่วโลก</li>
-        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> มีความสำคัญในกรณีการสืบสวนในสถานที่เกิดเหตุที่เกี่ยวกับซากศพหรือสิ่งมีชีวิตที่เน่าเปื่อย</li>
-    </ul>
-
-    <h4>3. Chrysomya rufifacies (CR)</h4>
-    <div class="species-images">
-        <img src="\static\picture\output\Head\C. rufifacies (CR)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
-        <img src="\static\picture\output\Body\C. rufifacies (CR).png" alt="Body of Chrysomya megacephala" class="species-image">
-    </div>
-    <ul>
-        <li><strong>ลักษณะทั่วไป:</strong> มีสีเขียวทอง มีลักษณะขนสีดำที่ตัว ทำให้มีลักษณะเป็นเอกลักษณ์</li>
-        <li><strong>การแพร่กระจาย:</strong> พบได้ทั่วไปในภูมิภาคเขตร้อน</li>
-        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> แมลงนี้มักพบในซากศพ และสามารถใช้ในการประเมินเวลาการตายได้</li>
-    </ul>
-
-    <h4>4. Hemipyrellia ligurriens (HL)</h4>
-    <div class="species-images">
-        <img src="\static\picture\output\Head\H. ligurriens (HL)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
-        <img src="\static\picture\output\Body\H. ligurriens (HL).png" alt="Body of Chrysomya megacephala" class="species-image">
-    </div>
-    <ul>
-        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันตัวเล็กถึงกลาง มีสีเขียวมัน</li>
-        <li><strong>การแพร่กระจาย:</strong> พบได้ทั่วไปในเอเชียตะวันออกเฉียงใต้</li>
-        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> มักพบในซากศพเช่นเดียวกับสายพันธุ์อื่นๆ ที่กล่าวมา</li>
-    </ul>
-
-    <h4>5. Lucilia cuprina (LC)</h4>
-    <div class="species-images">
-        <img src="\static\picture\output\Head\L. cuprina (LC)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
-        <img src="\static\picture\output\Body\L. cuprina (LC).png" alt="Body of Chrysomya megacephala" class="species-image">
-    </div>
-    <ul>
-        <li><strong>ลักษณะทั่วไป:</strong> สีเขียวทองขนาดเล็ก</li>
-        <li><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและกึ่งเขตร้อน</li>
-        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นสายพันธุ์ที่เกี่ยวข้องกับการแพร่เชื้อโรคและการตรวจสอบสถานที่เกิดเหตุ</li>
-    </ul>
-
-    <h4>6. Musca domestica (MD)</h4>
-    <div class="species-images">
-        <img src="\static\picture\output\Head\M. domestica (MD)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
-        <img src="\static\picture\output\Body\M. domestica (MD).png" alt="Body of Chrysomya megacephala" class="species-image">
-    </div>
-    <ul>
-        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันบ้านทั่วไป ขนาดเล็ก มีสีเทา-ดำ</li>
-        <li><strong>การแพร่กระจาย:</strong> พบได้ทั่วโลก</li>
-        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นแมลงวันชนิดที่พบบ่อยที่สุดในบ้านและมีบทบาทในการแพร่เชื้อโรค</li>
-    </ul>
-
-    <h4>7. Phormia dux (PD)</h4>
-    <div class="species-images">
-        <img src="\static\picture\output\Head\P. dux (PD)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
-        <img src="\static\picture\output\Body\P. dux (PD).png" alt="Body of Chrysomya megacephala" class="species-image">
-    </div>
-    <ul>
-        <li><strong>ลักษณะทั่วไป:</strong> แมลงวันสีดำ-น้ำเงิน ขนาดเล็ก</li>
-        <li><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและกึ่งเขตร้อน</li>
-        <li><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> พบในซากศพและสามารถใช้ในการตรวจสอบเวลาการตายได้</li>
-    </ul>
-                       
-                    </div>
-                </div>
-            </div>
-        </section>
-        </section>
 
         <section id="contact" class="section">
             <div class="container">
@@ -453,158 +329,208 @@
                 </form>
             </div>
         </section>
+    </section>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const minimalModeBtn = document.getElementById('minimalModeBtn');
-            const fullModeBtn = document.getElementById('fullModeBtn');
-            const minimalInput = document.getElementById('minimalInput');
-            const fullInput = document.getElementById('fullInput');
-            const predictBtn = document.getElementById('predictBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const resultsSection = document.getElementById('results');
-            const inputSection = document.getElementById('input');
-            const newPredictionBtn = document.getElementById('newPredictionBtn');
-            const startPredictionBtn = document.getElementById('startPredictionBtn');
+document.addEventListener('DOMContentLoaded', function () {
+    const minimalModeBtn = document.getElementById('minimalModeBtn');
+    const fullModeBtn = document.getElementById('fullModeBtn');
+    const minimalInput = document.getElementById('minimalInput');
+    const fullInput = document.getElementById('fullInput');
+    const predictBtn = document.getElementById('predictBtn');
+    const resultsSection = document.getElementById('results');
+    const inputSection = document.getElementById('input');
+    const newPredictionBtn = document.getElementById('newPredictionBtn');
+    const startPredictionBtn = document.getElementById('startPredictionBtn');
+    const modeInput = document.getElementById('modeInput');
+    const clearBtn = document.getElementById('clearBtn');
 
-            // Smooth scrolling for the 'startPredictionBtn' button
-            startPredictionBtn.addEventListener('click', function() {
-                document.querySelector('#input').scrollIntoView({ behavior: 'smooth' });
-            });
+    const minimalFields = ['a(1-2)', 'b(2-3)', 'e(6-7)', 'g(9-10)', 'Gena color', 'Body color'];
+    const fullFields = ['a(1-2)', 'b(2-3)', 'c(3-4)', 'd(4-5)', 'e(6-7)', 'f(7-10)', 
+                        'g(9-10)', 'h(9-15)', 'i(15-16)', 'j(14-15)', 'k(13-14)', 
+                        'l(13-17)', 'm(17-18)', 'n(1-18)', 'o(2-13)', 'p(3-12)', 
+                        'q(12-13)', 'r(5-12)', 's(11-14)', 't(8-11)', 'u(7-8)', 
+                        'v(8-9)', 'w(11-12)'];
 
-          // Toggle between minimal and full input modes
-        minimalModeBtn.addEventListener('click', function () {
-            minimalInput.style.display = 'block';
-            fullInput.style.display = 'none';
-            this.classList.add('btn-primary');
-            this.classList.remove('btn-secondary');
-            fullModeBtn.classList.add('btn-secondary');
-            fullModeBtn.classList.remove('btn-primary');
+    startPredictionBtn.addEventListener('click', function() {
+        document.querySelector('#input').scrollIntoView({ behavior: 'smooth' });
+    });
 
-            // Ensure hidden fields are not required
-            fullInput.querySelectorAll('input, select').forEach(input => input.required = false);
-            minimalInput.querySelectorAll('input, select').forEach(input => {
-                input.required = true;
-                input.value = ''; // Reset value to avoid submission issues
-            });
+    minimalModeBtn.addEventListener('click', () => switchToMode('minimal'));
+    fullModeBtn.addEventListener('click', () => switchToMode('full'));
+
+    function switchToMode(mode) {
+        modeInput.value = mode;
+        const isMinimal = mode === 'minimal';
+        minimalInput.style.display = isMinimal ? 'block' : 'none';
+        fullInput.style.display = isMinimal ? 'none' : 'block';
+        toggleButtonStyle(minimalModeBtn, isMinimal);
+        toggleButtonStyle(fullModeBtn, !isMinimal);
+        toggleRequiredFields(minimalInput, isMinimal);
+        toggleRequiredFields(fullInput, !isMinimal);
+    }
+
+    function toggleButtonStyle(button, isPrimary) {
+        button.classList.toggle('btn-primary', isPrimary);
+        button.classList.toggle('btn-secondary', !isPrimary);
+    }
+
+    function toggleRequiredFields(section, required) {
+        section.querySelectorAll('input, select').forEach(input => {
+            input.required = required;
+            if (!required) {
+                input.value = '';
+                input.classList.remove('is-invalid');
+            }
         });
+    }
 
-        fullModeBtn.addEventListener('click', function () {
-            minimalInput.style.display = 'none';
-            fullInput.style.display = 'block';
-            this.classList.add('btn-primary');
-            this.classList.remove('btn-secondary');
-            minimalModeBtn.classList.add('btn-secondary');
-            minimalModeBtn.classList.remove('btn-primary');
-
-            // Ensure hidden fields are not required
-            minimalInput.querySelectorAll('input, select').forEach(input => input.required = false);
-            fullInput.querySelectorAll('input, select').forEach(input => {
-                input.required = true;
-                input.value = ''; // Reset value to avoid submission issues
-            });
-        });
-
-
-
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-                });
-            });
-
-           // Prediction Logic
-predictBtn.addEventListener('click', function () {
-    const formData = new FormData();
-    let hasError = false;
-
-    // Determine the active input mode
-    const isMinimalMode = minimalInput.style.display === 'block';
-
-    // Append mode information to formData
-    formData.append('minimalMode', isMinimalMode.toString());
-
-    // Validate required fields for the active input mode
-    const activeInput = isMinimalMode ? minimalInput : fullInput;
-    activeInput.querySelectorAll('input[required], select[required]').forEach(input => {
-        if (!input.value) {
-            input.classList.add('is-invalid');
-            hasError = true;
-        } else {
-            input.classList.remove('is-invalid');
-            formData.append(input.id, input.value);
+    predictBtn.addEventListener('click', function () {
+        const mode = modeInput.value;
+        const activeInput = mode === 'minimal' ? minimalInput : fullInput;
+        const requiredFields = mode === 'minimal' ? minimalFields : fullFields;
+        
+        if (validateForm(activeInput, requiredFields)) {
+            submitPrediction(activeInput, requiredFields);
         }
     });
 
-    if (hasError) {
-        alert('Please fill in all required fields.');
-        return;  // Stop execution if there's an error
+    function validateForm(form, requiredFields) {
+        let isValid = true;
+        requiredFields.forEach(fieldName => {
+            const input = form.querySelector(`[name="${fieldName}"]`);
+            if (!input || !input.value.trim() || (input.type === "number" && isNaN(input.value))) {
+                if (input) input.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                if (input) input.classList.remove('is-invalid');
+            }
+        });
+        if (!isValid) {
+            alert('Please fill in all required fields correctly.');
+        }
+        return isValid;
     }
 
-    // Make a POST request to the backend to get the prediction
+    function submitPrediction(form, requiredFields) {
+        const formData = new FormData();
+        formData.append('mode', modeInput.value);
+        requiredFields.forEach(fieldName => {
+            const input = form.querySelector(`[name="${fieldName}"]`);
+            if (input) formData.append(fieldName, input.value);
+        });
+
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok.');
+            return response.json();
+        })
+        .then(displayResults)
+        .catch(error => {
+            console.error('Error during prediction:', error);
+            document.getElementById('errorContainer').textContent = 'An error occurred during prediction. Please try again later.';
+            document.getElementById('errorContainer').style.display = 'block';
+        });
+    }
+
+    newPredictionBtn.addEventListener('click', resetForm);
+
+    clearBtn.addEventListener('click', function () {
+        document.querySelectorAll('input[type="text"], input[type="number"], select').forEach(input => {
+            if (input.tagName === 'SELECT') {
+                input.selectedIndex = 0;
+            } else {
+                input.value = '';
+            }
+            input.classList.remove('is-invalid');
+        });
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('errorContainer').style.display = 'none';
+        document.getElementById('errorContainer').textContent = '';
+    });
+
+    function resetForm() {
+        resultsSection.style.display = 'none';
+        inputSection.style.display = 'block';
+        [minimalInput, fullInput].forEach(form => {
+            form.querySelectorAll('input, select').forEach(input => {
+                input.value = '';
+                input.classList.remove('is-invalid');
+            });
+        });
+        document.getElementById('predictedSpecies').textContent = '';
+        document.getElementById('headImage').style.display = 'none';
+        document.getElementById('bodyImage').style.display = 'none';
+        document.getElementById('noImagesMessage').style.display = 'none';
+    }
+
+    function displayResults(response) {
+        if (response.success) {
+            document.getElementById('predictedSpecies').textContent = response.species;
+            const headImage = document.getElementById('headImage');
+            const bodyImage = document.getElementById('bodyImage');
+            const noImagesMessage = document.getElementById('noImagesMessage');
+
+            if (response.species) {
+                headImage.src = `/static/picture/output/Head/${response.species}_HEAD.png`;
+                bodyImage.src = `/static/picture/output/Body/${response.species}.png`;
+                headImage.style.display = 'inline';
+                bodyImage.style.display = 'inline';
+                noImagesMessage.style.display = 'none';
+            } else {
+                headImage.style.display = 'none';
+                bodyImage.style.display = 'none';
+                noImagesMessage.style.display = 'block';
+            }
+
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('errorContainer').style.display = 'none';
+        } else {
+            document.getElementById('errorContainer').textContent = response.error_message || 'An error occurred during prediction.';
+            document.getElementById('errorContainer').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+        }
+
+        resultsSection.style.display = 'block';
+        inputSection.style.display = 'none';
+    }
+
+    // Initial setup
+    switchToMode('minimal');
+});
+
+document.getElementById('predictionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    var formData = new FormData(this);
+    
     fetch('/predict', {
         method: 'POST',
         body: formData
     })
     .then(response => response.json())
-    .then(data => displayResults(data))
+    .then(data => {
+        if (data.success) {
+            document.getElementById('predictionResult').textContent = `Predicted Species: ${data.species}`;
+            document.getElementById('probabilityResult').textContent = `Probability: ${(data.probability * 100).toFixed(2)}%`;
+            document.getElementById('results').style.display = 'block';
+        } else {
+            alert('Error: ' + data.error_message);
+        }
+    })
     .catch(error => {
-        console.error('Error during prediction:', error);
-        document.getElementById('errorContainer').textContent = 'An error occurred during prediction.';
-        document.getElementById('errorContainer').style.display = 'block';
+        console.error('Error:', error);
+        alert('An error occurred during prediction.');
     });
 });
-
-
-            // New prediction button handler
-            newPredictionBtn.addEventListener('click', function () {
-                resultsSection.style.display = 'none';
-                inputSection.style.display = 'block';
-                document.querySelectorAll('input, select').forEach(el => el.value = '');  // Clear form fields
-            });
-
-            // Display results logic
-            function displayResults(response) {
-                if (response.success) {
-                    document.getElementById('predictedSpecies').textContent = response.species;
-
-                    const headImage = document.getElementById('headImage');
-                    const bodyImage = document.getElementById('bodyImage');
-                    const noImagesMessage = document.getElementById('noImagesMessage');
-
-                    if (response.species) {
-                        headImage.src = `/static/picture/output/Head/${response.species}_HEAD.png`;
-                        bodyImage.src = `/static/picture/output/Body/${response.species}.png`;
-                        headImage.style.display = 'inline';
-                        bodyImage.style.display = 'inline';
-                        noImagesMessage.style.display = 'none';
-                    } else {
-                        headImage.style.display = 'none';
-                        bodyImage.style.display = 'none';
-                        noImagesMessage.style.display = 'block';
-                    }
-
-                    document.getElementById('resultContainer').style.display = 'block';
-                    document.getElementById('errorContainer').style.display = 'none';
-                } else {
-                    document.getElementById('errorContainer').textContent = response.error_message || 'An error occurred during prediction.';
-                    document.getElementById('errorContainer').style.display = 'block';
-                    document.getElementById('resultContainer').style.display = 'none';
-                }
-
-                resultsSection.style.display = 'block';
-                inputSection.style.display = 'none';
-            }
-        });
-
     </script>
-    
+</body>
 </html>
