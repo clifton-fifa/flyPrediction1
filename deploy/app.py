@@ -67,7 +67,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template("index2.html")
+    return render_template("index.html")
 
 @app.route("/predict", methods=['POST'])
 def predict_species_family():
@@ -76,25 +76,37 @@ def predict_species_family():
 
         measurements = {}
 
+        # Server-side validation
         for key in shape_columns + categorical_columns:
             if key in shape_columns:
+                value = request.form.get(key)
+                if value is None or value.strip() == '':
+                    return jsonify({'success': False, 'error_message': f"Missing value for {key}"})
                 try:
-                    measurements[key] = float(request.form.get(key, 0))
+                    measurements[key] = float(value)
+                    if measurements[key] < 0:
+                        return jsonify({'success': False, 'error_message': f"Value for {key} must be non-negative"})
                 except ValueError:
-                    measurements[key] = 0
+                    return jsonify({'success': False, 'error_message': f"Invalid value for {key}"})
             elif key in categorical_columns:
-                measurements[key] = request.form.get(key, '')
+                value = request.form.get(key)
+                if value is None or value.strip() == '':
+                    return jsonify({'success': False, 'error_message': f"Missing value for {key}"})
+                measurements[key] = value
 
-        # Make predictions
+        # Make predictions for both family and species
+        family, family_probability = predict(measurements, family_model)
         species, species_probability = predict(measurements, species_model)
 
-        logging.debug(f"Prediction result: Species={species}")
-        logging.debug(f"Probability: Species={species_probability}")
+        logging.debug(f"Prediction result: Family={family}, Species={species}")
+        logging.debug(f"Probabilities: Family={family_probability}, Species={species_probability}")
 
         result = {
             'success': True,
+            'family': family,
+            'family_probability': float(family_probability),
             'species': species,
-            'probability': float(species_probability)
+            'species_probability': float(species_probability)
         }
 
         logging.debug(f"Sending result to template: {result}")
@@ -104,7 +116,6 @@ def predict_species_family():
         error_message = f"An error occurred: {str(e)}"
         logging.error(error_message)
         return jsonify({'success': False, 'error_message': error_message})
-
 
 # Running the app
 if __name__ == "__main__":

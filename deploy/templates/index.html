@@ -1,155 +1,293 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 🪰 Fly Species Prediction </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-  </head>
-  <style>
-    h1 {
-      color: mediumseagreen;
-      text-align: center;
-      padding-top: 25px;
-      
-    }
-    .warning {
-      color: red;
-      font-weight: bold;
-      text-align: center;
-    }
-    .card{
-      margin-left:410px;
-      margin-top: 20px;
-      text-align: center;
-      color: rgb(0, 0, 0);
-    }
-    .container{
-      background:#edf2f7a4;
-      font-weight: bold;
-      padding-bottom:10px;
-      border-radius: 15px;
-    }
-    .color-selection {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .color-selection .col {
-      width: 20%;
-    }
-    #fullpoint {
-      padding-top: 40px;
-      padding-left: 150px;
-    }
-    #radiopoint {
-      padding-top: 40px;
-    }
-    #gena_color {
-      padding-left: 300px;
-    }
-    .text-white {
-      font-size: 20px;
-      color: rgb(0 0 0) !important;
-	  text-align: center;
-	  
-    }
-    .card-title {
-      color: rgb(0, 0, 0);
-	  font-size: 40px; 
-	  
-    }
-	.mb-3{
-		padding-top: 30px;
-		text-align: center;	}
-		
-  </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fly Species Prediction</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap');
+    
+        html, 
+        body {
+            height: 100%;
+            overflow-x: hidden;
+            background-image: url('/static/pexels-nathanjhilton-53014091.jpg');
+            background-size: cover; /* ทำให้ภาพครอบคลุมทั้งพื้นที่ */
+            background-position: center; /* จัดตำแหน่งภาพอยู่ตรงกลาง */
+            background-repeat: no-repeat; /* ห้ามทำให้ภาพซ้ำ */
+            font-family: 'Kanit', sans-serif; /* ใช้ฟอนต์ Kanit ที่ได้เพิ่มมา */
+            line-height: 1.6;
+            color: #333;
+            max-width: auto;
+            margin: 0 auto;
+            padding: 0px;
+            background-color: #f4f4f4;
+            
+        }
+    
+        h1.text-center.text-success {
+            font-size: 3.2rem; /* ปรับขนาดฟอนต์ */
+            color:rgb(255, 255, 255)!important;
+            /* text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); เพิ่มเงา */
+        }
+    
+        .text-center {
+            font-size: 1.5rem;
+            color: white;
+            text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+        }
+    
+        .btn-success, .btn-danger {
+            font-size: 1.3rem;
+        }
+    
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+    
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .navbar-nav {
+            width: 100%;
+            justify-content: center;
+        }
+    
+        .navbar-nav .nav-item {
+            margin: 0 10px;
+        }
+    
+        .content {
+            padding-top: 56px; /* Adjust based on your navbar height */
+        }
+    
+        .section-overlay1, .section-overlay2, .section-overlay3 {
+            position: relative;
+            padding: 0px;
+            border-radius: 0px;
+            margin: 0px;
+        }
+    
+        .section-overlay1 {
+            background-color: rgba(180, 98, 98, 0.446);
+        }
+    
+        .section-overlay2 {
+            background-color: rgba(255, 255, 255, 0.556);
+            
+        }
+    
+        .section-overlay3 {
+            background-color: rgba(255, 255, 255, 0.253);
+        }
+    
+        .section-with-padding {
+            padding-top: 100px; /* 56px (navbar height) + 20px (extra padding) */
+        }
+        .section-with-input {
+        padding-top: 150px; /* ปรับค่าตามที่ต้องการ */
+        }
 
-<body style="background-image: url('/static/licensed_image.png');">
- <!--=======================navbar=====================================================-->
- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<div class="container-fluid">
-	  <a class="navbar-brand" href="/">Fly Species Prediction</a>
-	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	  </button>
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-		  <li class="nav-item">
-			<a class="nav-link active" aria-current="page" href="/">Home</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="#">Contact</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link disabled">About</a>
-		  </li>
-		</ul>
-	  </div>
-	  
-	</div>
-  </nav>
 
-  <div class="container my-3 mt-3">
-    <h1 class="text-success">Fly Species Using Wing Morphometric Identifying</h1>
+    
+        .card-body {
+            font-family: 'Prompt', sans-serif;
+        }
+    
+        .species-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+    
+        .species-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: calc(50% - 10px);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+    
+        .species-card:hover {
+            transform: translateY(-5px);
+        }
+            
+        .section-title {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            font-weight: bold;
+            text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+        }
+        .species-header {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 15px;
+            font-size: 1.2em;
+        }
+    
+        .species-content {
+            padding: 20px;
+        }
+    
+        .species-images {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+    
+        .species-image {
+            max-width: 45%;
+            border-radius: 5px;
+        }
+    
+        .species-info {
+            font-size: 0.9em;
+        }
+    
+        .species-info strong {
+            color: #2c3e50;
+        }
+    
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+    
+        @media (max-width: 768px) {
+            .species-card {
+                width: 100%;
+            }
+        }
+        .custom-font-size {
+        font-size: 1.3rem; /* ปรับขนาดฟอนต์ตามที่ต้องการ */
+        }
 
-    <div class="mb-3">
-      <button id="minimalModeBtn" class="btn btn-primary"> Input with Colors</button>
-      <button id="fullModeBtn" class="btn btn-secondary"> Input without Colors</button>
-    </div>
+        .custom-font-size h2 {
+            font-size: 2rem; /* ปรับขนาดฟอนต์ของ h2 ภายใน section นี้ */
+        }
 
-    <form action="{{ url_for('predict_species_family') }}" method="post">
-      <div id="minimalinput" class="section">
-        <div id="minimal-input">
-          <div class="row">
-            <div class="col-md-2">
-              <label for="a1-2">a(1-2):</label>
-              <input type="number" step="any" class="form-control" id="a1-2" name="a(1-2)" required>
+        .custom-font-size .btn {
+            font-size: 1.2rem; /* ปรับขนาดฟอนต์ของปุ่มภายใน section นี้ */
+        }
+
+        .custom-font-size .form-label {
+            font-size: 1.2rem; /* ปรับขนาดฟอนต์ของ label ภายใน section นี้ */
+        }
+
+    </style>
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Fly Species Prediction</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#input">Input Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#species-info">Species Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact Us</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-2">
-              <label for="b2-3">b(2-3):</label>
-              <input type="number" step="any" class="form-control" id="b2-3" name="b(2-3)" required>
-            </div>           
-            <div class="col-md-2">
-              <label for="e6-7">e(6-7):</label>
-              <input type="number" step="any" class="form-control" id="e6-7" name="e(6-7)" required>
-            </div>
-            <div class="col-md-2">
-              <label for="g(9-10)"> g(9-10): </label>
-              <input type="number" step="any" id="g(9-10)" name="g(9-10)"  class="form-control" />
-            </div>
-          </div>
-          <div class="color-selection mt-3">
-			<div class="col">
-			  <h5>Choose Gena color</h5>
-			  <select class="form-control" name="Gena color" required>
-				<option value="" disabled selected>Select Gena color</option>
-				<option value="Orange">Orange</option>
-				<option value="White">White</option>
-			  </select>
-			</div>
-			<div class="col">
-			  <h5>Choose Body color</h5>
-			  <select class="form-control" name="Body color" required>
-				<option value="" disabled selected>Select Body color</option>
-				<option value="Metallic green or blue">Metallic green or blue</option>
-				<option value="Cupreous">Cupreous</option>
-				<option value="Grey">Grey</option>
-			  </select>
-			</div>
-		  </div>
         </div>
-		<div class="row mt-4">
-			<div class="col-md-12 text-center">
-			  <button type="submit" class="btn btn-success">Get Prediction</button>
-			  <button type="reset" class="btn btn-danger">Clear</button>
-			</div>
-		  </div>
-      </div>
+    </nav>
 
-      <div id="fullpoint" class="section" style="display:none;">
-        <div id="full-input">      
-          <div class="row">			
+    <div class="content">
+        <section class="section-overlay1">
+        <section id="home" class="section">
+            <div class="container">
+                <h1 class="text-center text-success"> Fly Species Using Wing 
+                Morphometric Identifying</h1>
+                <p class="text-center">Welcome to our fly species prediction tool. Use the navigation menu to explore different sections.</p>
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-success" id="startPredictionBtn">Start Prediction</button>
+            </div>
+        </section>
+      </section>
+
+        <section class="section-overlay2">
+        <section id="input" class="section section-with-input custom-font-size">
+            <div class="container">
+                <h2 class="headlineinput">Input Data</h2>
+                <div class="mb-3">
+                    <button class="btn btn-primary" id="minimalModeBtn">Input With Colors</button>
+                    <button class="btn btn-secondary" id="fullModeBtn">Input Without Colors</button>
+                </div>
+            
+                
+                <div id="minimalInput">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="a12" class="form-label">a(1-2):</label>
+                            <input type="number" class="form-control" id="a12">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="b23" class="form-label">b(2-3):</label>
+                            <input type="number" class="form-control" id="b23">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="e67" class="form-label">e(6-7):</label>
+                            <input type="number" class="form-control" id="e67">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="g910" class="form-label">g(9-10):</label>
+                            <input type="number" class="form-control" id="g910">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <!-- <label for="genaColor" class="form-label">Choose Gena color:</label> -->
+                            <select class="form-select" id="genaColor">
+                                <option value="" selected disabled>Select Gena color</option>
+                                <option value="orange">Orange</option>
+                                <option value="white">White</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <!-- <label for="bodyColor" class="form-label">Choose Body color:</label> -->
+                            <select class="form-select" id="bodyColor">
+                                <option value="" selected disabled>Select Body color</option>
+                                <option value="metallicgreen">Metallic green</option>
+                                <option value="metallicblue">Metallic Blue</option>
+                                <option value="cupreous">Cupreous</option>
+                                <option value="grey">Grey</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div id="fullInput" style="display:none;">
+                    <div class="row">			
             <div class="col-md-2">
               <label for="a(1-2)"> a(1-2) : </label>
               <input type="number" step="any" id="a(1-2)" name="a(1-2)"  class="form-control" required/>
@@ -254,116 +392,419 @@
               <label for="w(11-12)"> w(11-12): </label>
               <input type="number" step="any" id="w(11-12)" name="w(11-12)"  class="form-control" />
             </div>	
-          </div>
-        </div>
-		<div class="row mt-4">
-			<div class="col-md-12 text-center">
-			  <button type="submit" class="btn btn-success">Get Prediction</button>
-			  <button type="reset" class="btn btn-danger">Clear</button>
-			</div>
-		  </div>
-      </div>
-      
-      
-    </form>
-  
+           </div>
+           </div>
+           </div>  
+            <div class="text-center mt-3">
+                    <button class="btn btn-success" id="predictBtn">Get Prediction</button>
+                    <button class="btn btn-danger" id="clearBtn">Clear</button>
+                </div>
+        </section>
 
-          
-<section id="results" class="section" style="display:none;">
-    <div class="container">
-        {% if prediction_result and prediction_result.success %}
-            <div id="resultContainer" class="card" style="width: 100%; margin:auto; max-width: 1000px;">
-                <div class="card-body">
-                    <h5 class="card-title text-center" style="color: #333; font-size: 24px;">Prediction Result</h5>
-                    <p class="text-center" style="font-size: 20px;">Predicted Species: <strong>{{ prediction_result.species }}</strong></p>
-                    
-                    {% if prediction_result.species %}
-                        <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
-                            <img src="{{ url_for('static', filename='picture/output/Head/' ~ prediction_result.species ~ '_HEAD.png') }}" 
-                                 alt="Head Image" class="img-fluid" style="max-width: 100%; height: auto; margin: 10px;">
-                            <img src="{{ url_for('static', filename='picture/output/Body/' ~ prediction_result.species ~ '.png') }}" 
-                                 alt="Body Image" class="img-fluid" style="max-width: 100%; height: auto; margin: 10px;">
+        
+        <section id="results" class="section section-with-padding" style="display:none;">
+            <div class="container">
+                <div id="resultContainer" class="card" style="width: 100%; margin:auto; max-width: 1000px;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center" style="color: #333; font-size: 24px;">Prediction Result</h5>
+                        <p class="text-center" style="font-size: 20px;">Predicted Species: <strong id="predictedSpecies"></strong></p>
+                        
+                        <div id="imageContainer" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+                            <img id="headImage" alt="Head Image" class="img-fluid" style="max-width: 600px; height: 300px; margin: 10px;">
+                            <img id="bodyImage" alt="Body Image" class="img-fluid" style="max-width: 600px; height: 300px; margin: 10px;">
                         </div>
-                    {% else %}
-                        <p class="text-center">Images are not available for this prediction.</p>
-                    {% endif %}
+                        
+                        <p id="noImagesMessage" class="text-center" style="display: none;">Images are not available for this prediction.</p>
+                    </div>
+                </div>
+                
+                <div id="errorContainer" class="alert alert-danger" role="alert" style="display: none;"></div>
+                
+                <div class="mb-3 d-flex justify-content-center mt-3">
+                    <button class="btn btn-success" id="newPredictionBtn">New Prediction</button>
                 </div>
             </div>
-        {% elif prediction_result and not prediction_result.success %}
-            <div class="alert alert-danger" role="alert">
-                {{ prediction_result.error_message }}
+        </section>
+        </section>
+        
+        <section class="section-overlay1">
+            <section id="species-info" class="section section-with-padding">
+                <div class="container">
+                    <h2 class="section-title">Species Information For Prediction</h2>
+                    <div class="species-container">
+                        <div class="species-card">
+                            <div class="species-header">Chrysomya megacephala (CM)</div>
+                            <div class="species-content">
+                                <div class="species-images">
+                                    <img src="/static/picture/output/Head/C. megacephala (CM)_HEAD.png" alt="Head of Chrysomya megacephala" class="species-image">
+                                    <img src="/static/picture/output/Body/C. megacephala (CM).png" alt="Body of Chrysomya megacephala" class="species-image">
+                                </div>
+                                <div class="species-info">
+                                    <p><strong>ลักษณะทั่วไป:</strong> แมลงวันหัวโตมีขนาดกลางถึงใหญ่ สีตัวออกสีเขียวเหลืองมันเป็นเงา</p>
+                                    <p><strong>การแพร่กระจาย:</strong> พบได้ในเขตร้อนทั่วโลก โดยเฉพาะในเอเชียตะวันออกเฉียงใต้</p>
+                                    <p><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นแมลงที่พบมากในซากศพ จึงมีบทบาทสำคัญในการตรวจสอบเวลาการตาย (Post-mortem interval)</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="species-card">
+                            <div class="species-header">Chrysomya nigripes (CN)</div>
+                            <div class="species-content">
+                                <div class="species-images">
+                                    <img src="/static/picture/output/Head/C. nigripes (CN)_HEAD.png" alt="Head of Chrysomya nigripes" class="species-image">
+                                    <img src="/static/picture/output/Body/C. nigripes (CN).png" alt="Body of Chrysomya nigripes" class="species-image">
+                                </div>
+                                <div class="species-info">
+                                    <p><strong>ลักษณะทั่วไป:</strong> แมลงวันตัวเล็กถึงขนาดกลาง มีสีเขียวเข้ม</p>
+                                    <p><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและเขตอบอุ่นทั่วโลก</p>
+                                    <p><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> มีความสำคัญในกรณีการสืบสวนในสถานที่เกิดเหตุที่เกี่ยวกับซากศพหรือสิ่งมีชีวิตที่เน่าเปื่อย</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="species-card">
+                            <div class="species-header">Chrysomya rufifacies (CR)</div>
+                            <div class="species-content">
+                                <div class="species-images">
+                                    <img src="/static/picture/output/Head/C. rufifacies (CR)_HEAD.png" alt="Head of Chrysomya rufifacies" class="species-image">
+                                    <img src="/static/picture/output/Body/C. rufifacies (CR).png" alt="Body of Chrysomya rufifacies" class="species-image">
+                                </div>
+                                <div class="species-info">
+                                    <p><strong>ลักษณะทั่วไป:</strong> มีสีเขียวทอง มีลักษณะขนสีดำที่ตัว ทำให้มีลักษณะเป็นเอกลักษณ์</p>
+                                    <p><strong>การแพร่กระจาย:</strong> พบได้ทั่วไปในภูมิภาคเขตร้อน</p>
+                                    <p><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> แมลงนี้มักพบในซากศพ และสามารถใช้ในการประเมินเวลาการตายได้</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="species-card">
+                            <div class="species-header">Hemipyrellia ligurriens (HL)</div>
+                            <div class="species-content">
+                                <div class="species-images">
+                                    <img src="/static/picture/output/Head/H. ligurriens (HL)_HEAD.png" alt="Head of Hemipyrellia ligurriens" class="species-image">
+                                    <img src="/static/picture/output/Body/H. ligurriens (HL).png" alt="Body of Hemipyrellia ligurriens" class="species-image">
+                                </div>
+                                <div class="species-info">
+                                    <p><strong>ลักษณะทั่วไป:</strong> แมลงวันตัวเล็กถึงกลาง มีสีเขียวมัน</p>
+                                    <p><strong>การแพร่กระจาย:</strong> พบได้ทั่วไปในเอเชียตะวันออกเฉียงใต้</p>
+                                    <p><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> มักพบในซากศพเช่นเดียวกับสายพันธุ์อื่นๆ ที่กล่าวมา</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="species-card">
+                            <div class="species-header">Lucilia cuprina (LC)</div>
+                            <div class="species-content">
+                                <div class="species-images">
+                                    <img src="/static/picture/output/Head/L. cuprina (LC)_HEAD.png" alt="Head of Lucilia cuprina" class="species-image">
+                                    <img src="/static/picture/output/Body/L. cuprina (LC).png" alt="Body of Lucilia cuprina" class="species-image">
+                                </div>
+                                <div class="species-info">
+                                    <p><strong>ลักษณะทั่วไป:</strong> สีเขียวทองขนาดเล็ก</p>
+                                    <p><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและกึ่งเขตร้อน</p>
+                                    <p><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นสายพันธุ์ที่เกี่ยวข้องกับการแพร่เชื้อโรคและการตรวจสอบสถานที่เกิดเหตุ</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="species-card">
+                            <div class="species-header">Musca domestica (MD)</div>
+                            <div class="species-content">
+                                <div class="species-images">
+                                    <img src="/static/picture/output/Head/M. domestica (MD)_HEAD.png" alt="Head of Musca domestica" class="species-image">
+                                    <img src="/static/picture/output/Body/M. domestica (MD).png" alt="Body of Musca domestica" class="species-image">
+                                </div>
+                                <div class="species-info">
+                                    <p><strong>ลักษณะทั่วไป:</strong> แมลงวันบ้านทั่วไป ขนาดเล็ก มีสีเทา-ดำ</p>
+                                    <p><strong>การแพร่กระจาย:</strong> พบได้ทั่วโลก</p>
+                                    <p><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> เป็นแมลงวันชนิดที่พบบ่อยที่สุดในบ้านและมีบทบาทในการแพร่เชื้อโรค</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="species-card">
+                            <div class="species-header">Phormia dux (PD)</div>
+                            <div class="species-content">
+                                <div class="species-images">
+                                    <img src="/static/picture/output/Head/P. dux (PD)_HEAD.png" alt="Head of Phormia dux" class="species-image">
+                                    <img src="/static/picture/output/Body/P. dux (PD).png" alt="Body of Phormia dux" class="species-image">
+                                </div>
+                                <div class="species-info">
+                                    <p><strong>ลักษณะทั่วไป:</strong> แมลงวันสีดำ-น้ำเงิน ขนาดเล็ก</p>
+                                    <p><strong>การแพร่กระจาย:</strong> พบในเขตร้อนและกึ่งเขตร้อน</p>
+                                    <p><strong>ความสำคัญทางการแพทย์และนิติวิทยาศาสตร์:</strong> พบในซากศพและสามารถใช้ในการตรวจสอบเวลาการตายได้</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        
+        <section class="section-overlay2">
+        <section id="contact" class="section">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
             </div>
-        {% endif %}
-        <div class="mb-3 d-flex justify-content-center mt-3">
-            <button class="btn btn-success" id="newPredictionBtn">New Prediction</button>
-        </div>
+        </section>
+        </section>
     </div>
-</section>
-</body>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('startPredictionBtn').addEventListener('click', function() {
+        document.querySelector('#input').scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+          document.getElementById('newPredictionBtn').addEventListener('click', function() {
+        document.querySelector('#input').scrollIntoView({
+            behavior: 'smooth'
+        });
+        document.getElementById('results').style.display = 'none'; // ซ่อนส่วนของผลลัพธ์
+        document.getElementById('input').style.display = 'block';  // แสดงส่วนของ input
+    });
+        document.addEventListener('DOMContentLoaded', function() {
+            const minimalModeBtn = document.getElementById('minimalModeBtn');
+            const fullModeBtn = document.getElementById('fullModeBtn');
+            const minimalInput = document.getElementById('minimalInput');
+            const fullInput = document.getElementById('fullInput');
+            const predictBtn = document.getElementById('predictBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const resultsSection = document.getElementById('results');
+            const inputSection = document.getElementById('input');
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            minimalModeBtn.addEventListener('click', function() {
+                minimalInput.style.display = 'block';
+                fullInput.style.display = 'none';
+                this.classList.add('btn-primary');
+                this.classList.remove('btn-secondary');
+                fullModeBtn.classList.add('btn-secondary');
+                fullModeBtn.classList.remove('btn-primary');
+            });
 
-<script>
- function clearResults() {
-    const resultContainer = document.getElementById('resultContainer');
-    if (resultContainer) {
-      resultContainer.innerHTML = '';
-      resultContainer.style.display = 'none';
+            fullModeBtn.addEventListener('click', function() {
+                minimalInput.style.display = 'none';
+                fullInput.style.display = 'block';
+                this.classList.add('btn-primary');
+                this.classList.remove('btn-secondary');
+                minimalModeBtn.classList.add('btn-secondary');
+                minimalModeBtn.classList.remove('btn-primary');
+            });
+
+            predictBtn.addEventListener('click', function() {
+                resultsSection.style.display = 'flex';
+                inputSection.style.display = 'none';
+                document.getElementById('predictedSpecies').textContent = 'Example Species';
+            });
+
+            clearBtn.addEventListener('click', function() {
+                document.querySelectorAll('input, select').forEach(el => el.value = '');
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const predictBtn = document.getElementById('predictBtn');
+    const resultsSection = document.getElementById('results');
+    const inputSection = document.getElementById('input');
+    const newPredictionBtn = document.getElementById('newPredictionBtn');
+    
+    predictBtn.addEventListener('click', function() {
+        // Here you would typically collect form data and send it to your server
+        // For this example, we'll simulate a server response
+        const simulatedResponse = {
+            success: true,
+            species: 'C. megacephala'
+        };
+        
+        displayResults(simulatedResponse);
+    });
+    
+    newPredictionBtn.addEventListener('click', function() {
+        resultsSection.style.display = 'none';
+        inputSection.style.display = 'block';
+        // Reset form fields if necessary
+    });
+    
+    function displayResults(response) {
+        if (response.success) {
+            document.getElementById('predictedSpecies').textContent = response.species;
+            
+            const headImage = document.getElementById('headImage');
+            const bodyImage = document.getElementById('bodyImage');
+            const noImagesMessage = document.getElementById('noImagesMessage');
+            
+            if (response.species) {
+                headImage.src = `/static/picture/output/Head/${response.species}_HEAD.png`;
+                bodyImage.src = `/static/picture/output/Body/${response.species}.png`;
+                headImage.style.display = 'inline';
+                bodyImage.style.display = 'inline';
+                noImagesMessage.style.display = 'none';
+            } else {
+                headImage.style.display = 'none';
+                bodyImage.style.display = 'none';
+                noImagesMessage.style.display = 'block';
+            }
+            
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('errorContainer').style.display = 'none';
+        } else {
+            document.getElementById('errorContainer').textContent = response.error_message || 'An error occurred during prediction.';
+            document.getElementById('errorContainer').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+        }
+        
+        resultsSection.style.display = 'block';
+        inputSection.style.display = 'none';
     }
-  }
-
-  function showSection(sectionId) {
-    document.getElementById('minimalinput').style.display = sectionId === 'minimalinput' ? 'block' : 'none';
-    document.getElementById('fullpoint').style.display = sectionId === 'fullpoint' ? 'block' : 'none';
-    clearResults();
-  }
-
-  document.getElementById('minimalModeBtn').addEventListener('click', function() {
-    showSection('minimalinput');
-  });
-
-  document.getElementById('fullModeBtn').addEventListener('click', function() {
-    showSection('fullpoint');
-  });
-
-  // Hide all sections by default
-  document.getElementById('minimalinput').style.display = 'none';
-  document.getElementById('fullpoint').style.display = 'none';
-
-  // Hide all sections by default
-  document.getElementById('minimalinput').style.display = 'none';
-  document.getElementById('fullpoint').style.display = 'none';
-
-    // Handle form submission
- document.getElementById('predictionForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  let formData = new FormData(this);
-  
-  // เพิ่มข้อมูลเกี่ยวกับโหมดที่ใช้
-  if (document.getElementById('minimalinput').style.display !== 'none') {
-    formData.append('mode', 'minimal');
-  } else {
-    formData.append('mode', 'full');
-  }
-
-  fetch(this.action, {
-    method: 'POST',
-    body: formData,
-  })
-  .then(response => response.text())
-  .then(html => {
-    document.getElementById('resultContainer').innerHTML = html;
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
 });
-  </script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const predictBtn = document.getElementById('predictBtn');
+    const resultsSection = document.getElementById('results');
+    const inputSection = document.getElementById('input');
+    const newPredictionBtn = document.getElementById('newPredictionBtn');
+
+    predictBtn.addEventListener('click', function() {
+        // Collect form data
+        const formData = new FormData();
+        document.querySelectorAll('input, select').forEach(input => {
+            formData.append(input.id, input.value);
+        });
+
+        // Make a POST request to the backend to get the prediction
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => displayResults(data))
+        .catch(error => {
+            console.error('Error during prediction:', error);
+            document.getElementById('errorContainer').textContent = 'An error occurred during prediction.';
+            document.getElementById('errorContainer').style.display = 'block';
+        });
+    });
+
+    newPredictionBtn.addEventListener('click', function() {
+        resultsSection.style.display = 'none';
+        inputSection.style.display = 'block';
+    });
+
+    function displayResults(response) {
+        if (response.success) {
+            document.getElementById('predictedSpecies').textContent = response.species;
+            
+            const headImage = document.getElementById('headImage');
+            const bodyImage = document.getElementById('bodyImage');
+            const noImagesMessage = document.getElementById('noImagesMessage');
+            
+            if (response.species) {
+                headImage.src = `/static/picture/output/Head/${response.species}_HEAD.png`;
+                bodyImage.src = `/static/picture/output/Body/${response.species}.png`;
+                headImage.style.display = 'inline';
+                bodyImage.style.display = 'inline';
+                noImagesMessage.style.display = 'none';
+            } else {
+                headImage.style.display = 'none';
+                bodyImage.style.display = 'none';
+                noImagesMessage.style.display = 'block';
+            }
+            
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('errorContainer').style.display = 'none';
+        } else {
+            document.getElementById('errorContainer').textContent = response.error_message || 'An error occurred during prediction.';
+            document.getElementById('errorContainer').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+        }
+        
+        resultsSection.style.display = 'block';
+        inputSection.style.display = 'none';
+    }
+    });
+    document.getElementById('getPredictionBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+        
+        // Check if all required fields are filled
+        var inputs = document.querySelectorAll('#minimalInput input, #minimalInput select');
+        var allFilled = true;
+        inputs.forEach(function(input) {
+            if (input.value === '') {
+                allFilled = false;
+            }
+        });
+        
+        if (!allFilled) {
+            alert('Please fill in all fields before getting a prediction.');
+            return;
+        }
+        
+        // If all fields are filled, proceed with the prediction
+        var form = document.getElementById('inputForm');
+        var formData = new FormData(form);
+
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('results').style.display = 'block';
+                document.getElementById('resultContainer').style.display = 'block';
+                document.getElementById('errorContainer').style.display = 'none';
+                
+                var resultHtml = `
+                    <p><strong>Predicted Family:</strong> ${data.family} (Probability: ${(data.family_probability * 100).toFixed(2)}%)</p>
+                    <p><strong>Predicted Species:</strong> ${data.species} (Probability: ${(data.species_probability * 100).toFixed(2)}%)</p>
+                `;
+                
+                document.getElementById('predictionResult').innerHTML = resultHtml;
+            } else {
+                document.getElementById('results').style.display = 'block';
+                document.getElementById('resultContainer').style.display = 'none';
+                document.getElementById('errorContainer').style.display = 'block';
+                document.getElementById('errorContainer').textContent = data.error_message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('errorContainer').style.display = 'block';
+            document.getElementById('errorContainer').textContent = 'An error occurred while processing your request.';
+        });
+    });
+
+    </script>
 </body>
 </html>
-
-
