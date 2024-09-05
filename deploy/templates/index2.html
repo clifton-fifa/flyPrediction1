@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fly Species Prediction</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles remain unchanged */
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            background-image: url('/static/backiee-122987-landscape.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        h1.text-center.text-success {
+            font-size: 3rem;
+            color: white !important;
+        }
+        .text-center {
+            font-size: 1.3rem;
+            color: white;
+            text-shadow: black 0.1em 0.1em 0.2em;
+        }
+        .btn-success, .btn-danger {
+            font-size: 1.3rem;
+        }
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        .species-info {
+            display: none;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar-nav {
+            width: 100%;
+            justify-content: center;
+        }
+        .navbar-nav .nav-item {
+            margin: 0 10px;
+        }
+        .content {
+            padding-top: 56px;
+        }
+        .section-overlay {
+            position: relative;
+            padding: 0px;
+            background-color: rgba(255, 255, 255, 0.571);
+            border: 0px solid rgba(255, 255, 255, 0);
+            border-radius: 0px;
+            margin: 0px;
+        }
+        .section-with-padding {
+            padding-top: 76px;
+        }
+        .section-overlay, .section-with-padding, .card-body {
+            font-family: 'Prompt', sans-serif;
+        }
+        .species-images {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+        .species-image {
+            width: 320px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .prediction-title {
+        text-align: center;
+        }
+        .prediction-text {
+        text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Fly Species Prediction</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#input">Input Data</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#species-info">Species Info</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content">
+        <section id="home" class="section">
+            <div class="container">
+                <h1 class="text-center text-success">Fly Species Using Wing Morphometric Identifying</h1>
+                <p class="text-center">Welcome to our fly species prediction tool. Use the navigation menu to explore different sections.</p>
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-success" id="startPredictionBtn">Start Prediction</button>
+            </div>
+        </section>
+
+        <section class="section-overlay">
+            <section id="input" class="section section-with-padding">
+                <div class="container">
+                    <input type="hidden" name="mode" id="modeInput">
+                    <h2>Input Data</h2>
+                    <div class="mb-3">
+                        <button class="btn btn-primary" id="minimalModeBtn">Input with Colors</button>
+                        <button class="btn btn-secondary" id="fullModeBtn">Input without Colors</button>
+                    </div>
+
+                    <div id="minimalInput">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="a12" class="form-label">a(1-2):</label>
+                                <input type="number" class="form-control" id="a12" name="a(1-2)">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="b23" class="form-label">b(2-3):</label>
+                                <input type="number" class="form-control" id="b23" name="b(2-3)">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="e67" class="form-label">e(6-7):</label>
+                                <input type="number" class="form-control" id="e67" name="e(6-7)">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="g910" class="form-label">g(9-10):</label>
+                                <input type="number" class="form-control" id="g910" name="g(9-10)">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="genaColor" class="form-label">Choose Gena color:</label>
+                                <select class="form-select" id="genaColor" name="Gena color">
+                                    <option value="orange">Orange</option>
+                                    <option value="white">White</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="bodyColor" class="form-label">Choose Body color:</label>
+                                <select class="form-select" id="bodyColor" name="Body color">
+                                    <option value="metallic_green">Metallic green</option>
+                                    <option value="metallic_blue">Metallic blue</option>
+                                    <option value="cupreous">Cupreous</option>
+                                    <option value="grey">Grey</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+        <div id="fullInput" style="display:none;">
+          <div class="row">			
+            <div class="col-md-2">
+              <label for="a(1-2)"> a(1-2) : </label>
+              <input type="number" step="any" id="a(1-2)" name="a(1-2)"  class="form-control" required/>
+            </div>
+            <div class="col-md-2">
+              <label for="b(2-3)"> b(2-3): </label>
+              <input type="number" step="any" id="b(2-3)" name="b(2-3)"  class="form-control" required/>
+            </div>			
+            <div class="col-md-2">
+              <label for="c(3-4)"> c(3-4): </label>
+              <input type="number" step="any" id="c(3-4)" name="c(3-4)"  class="form-control" required/>
+            </div>	
+            <div class="col-md-2">
+              <label for="d(4-5)"> d(4-5): </label>
+              <input type="number" step="any" id="d(4-5)" name="d(4-5)"  class="form-control" required/>
+            </div>	
+            <div class="col-md-2">
+              <label for="e(6-7)"> e(6-7): </label>
+              <input type="number" step="any" id="e(6-7)" name="e(6-7)"  class="form-control" required/>
+            </div>	
+          </div>
+
+          <div class="row">				
+            <div class="col-md-2">
+              <label for="f(7-10)"> f(7-10) : </label>
+              <input type="number" step="any" id="f(7-10)" name="f(7-10)"  class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <label for="g(9-10)"> g(9-10): </label>
+              <input type="number" step="any" id="g(9-10)" name="g(9-10)"  class="form-control" />
+            </div>			
+            <div class="col-md-2">
+              <label for="h(9-15)"> h(9-15): </label>
+              <input type="number" step="any" id="h(9-15)" name="h(9-15)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="i(15-16)"> i(15-16): </label>
+              <input type="number" step="any" id="i(15-16)" name="i(15-16)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="j(14-15)"> j(14-15): </label>
+              <input type="number" step="any" id="j(14-15)" name="j(14-15)"  class="form-control" />
+            </div>	
+          </div>
+
+          <div class="row">			
+            <div class="col-md-2">
+              <label for="k(13-14)"> k(13-14) : </label>
+              <input type="number" step="any" id="k(13-14)" name="k(13-14)"  class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <label for="l(13-17)"> l(13-17): </label>
+              <input type="number" step="any" id="l(13-17)" name="l(13-17)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="m(17-18)"> m(17-18) : </label>
+              <input type="number" step="any" id="m(17-18)" name="m(17-18)"  class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <label for="n(1-18)"> n(1-18): </label>
+              <input type="number" step="any" id="n(1-18)" name="n(1-18)"  class="form-control" />
+            </div>			
+            <div class="col-md-2">
+              <label for="o(2-13)"> o(2-13): </label>
+              <input type="number" step="any" id="o(2-13)" name="o(2-13)"  class="form-control" />
+            </div>	
+          </div>
+
+          <div class="row">		
+            <div class="col-md-2">
+              <label for="p(3-12)"> p(3-12): </label>
+              <input type="number" step="any" id="p(3-12)" name="p(3-12)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="q(12-13)"> q(12-13): </label>
+              <input type="number" step="any" id="q(12-13)" name="q(12-13)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="r(5-12)"> r(5-12): </label>
+              <input type="number" step="any" id="r(5-12)" name="r(5-12)"  class="form-control" />
+            </div>		
+            <div class="col-md-2">
+              <label for="s(11-14)"> s(11-14) : </label>
+              <input type="number" step="any" id="s(11-14)" name="s(11-14)"  class="form-control" />
+            </div>
+            <div class="col-md-2">
+              <label for="t(8-11)"> t(8-11): </label>
+              <input type="number" step="any" id="t(8-11)" name="t(8-11)"  class="form-control" />
+            </div>			
+          </div>
+        
+          <div class="row">
+            <div class="col-md-2">
+              <label for="u(7-8)"> u(7-8): </label>
+              <input type="number" step="any" id="u(7-8)" name="u(7-8)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="v(8-9)"> v(8-9): </label>
+              <input type="number" step="any" id="v(8-9)" name="v(8-9)"  class="form-control" />
+            </div>	
+            <div class="col-md-2">
+              <label for="w(11-12)"> w(11-12): </label>
+              <input type="number" step="any" id="w(11-12)" name="w(11-12)"  class="form-control" />
+            </div>	
+           </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button class="btn btn-success" id="predictBtn">Get Prediction</button>
+                        <button class="btn btn-danger" id="clearBtn">Clear</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="results" class="section section-with-padding" style="display:none;">
+                <div class="container">
+                    <div id="resultContainer" class="card" style="width: 100%; margin:auto; max-width: 1000px;">
+                        <div class="card-body">
+                            <h5 class="card-title prediction-title" style="color: #333; font-size: 24px;"><b>Prediction Result</b></h5>
+                            <p class="prediction-text" style="font-size: 20px;">Predicted Species: <strong id="predictedSpecies" style="color: red;"></strong></p>
+
+                            <div id="imageContainer" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                <img id="headImage" alt="Head Image" class="img-fluid species-image">
+                                <img id="bodyImage" alt="Body Image" class="img-fluid species-image">
+                            </div>
+
+                            <p id="noImagesMessage" class="text-center" style="display: none;">Images are not available for this prediction.</p>
+                        </div>
+                    </div>
+
+                    <div id="errorContainer" class="alert alert-danger" role="alert" style="display: none;"></div>
+
+                    <div class="mb-3 d-flex justify-content-center mt-3">
+                        <button class="btn btn-success" id="newPredictionBtn">New Prediction</button>
+                    </div>
+                </div>
+            </section>
+        
+
+        <section id="contact" class="section">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </section>
+    </section>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const minimalModeBtn = document.getElementById('minimalModeBtn');
+    const fullModeBtn = document.getElementById('fullModeBtn');
+    const minimalInput = document.getElementById('minimalInput');
+    const fullInput = document.getElementById('fullInput');
+    const predictBtn = document.getElementById('predictBtn');
+    const resultsSection = document.getElementById('results');
+    const inputSection = document.getElementById('input');
+    const newPredictionBtn = document.getElementById('newPredictionBtn');
+    const startPredictionBtn = document.getElementById('startPredictionBtn');
+    const modeInput = document.getElementById('modeInput');
+    const clearBtn = document.getElementById('clearBtn');
+
+    const minimalFields = ['a(1-2)', 'b(2-3)', 'e(6-7)', 'g(9-10)', 'Gena color', 'Body color'];
+    const fullFields = ['a(1-2)', 'b(2-3)', 'c(3-4)', 'd(4-5)', 'e(6-7)', 'f(7-10)', 
+                        'g(9-10)', 'h(9-15)', 'i(15-16)', 'j(14-15)', 'k(13-14)', 
+                        'l(13-17)', 'm(17-18)', 'n(1-18)', 'o(2-13)', 'p(3-12)', 
+                        'q(12-13)', 'r(5-12)', 's(11-14)', 't(8-11)', 'u(7-8)', 
+                        'v(8-9)', 'w(11-12)'];
+
+    startPredictionBtn.addEventListener('click', function() {
+        document.querySelector('#input').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    minimalModeBtn.addEventListener('click', () => switchToMode('minimal'));
+    fullModeBtn.addEventListener('click', () => switchToMode('full'));
+
+    function switchToMode(mode) {
+        modeInput.value = mode;
+        const isMinimal = mode === 'minimal';
+        minimalInput.style.display = isMinimal ? 'block' : 'none';
+        fullInput.style.display = isMinimal ? 'none' : 'block';
+        toggleButtonStyle(minimalModeBtn, isMinimal);
+        toggleButtonStyle(fullModeBtn, !isMinimal);
+        toggleRequiredFields(minimalInput, isMinimal);
+        toggleRequiredFields(fullInput, !isMinimal);
+    }
+
+    function toggleButtonStyle(button, isPrimary) {
+        button.classList.toggle('btn-primary', isPrimary);
+        button.classList.toggle('btn-secondary', !isPrimary);
+    }
+
+    function toggleRequiredFields(section, required) {
+        section.querySelectorAll('input, select').forEach(input => {
+            input.required = required;
+            if (!required) {
+                input.value = '';
+                input.classList.remove('is-invalid');
+            }
+        });
+    }
+
+    predictBtn.addEventListener('click', function () {
+        const mode = modeInput.value;
+        const activeInput = mode === 'minimal' ? minimalInput : fullInput;
+        const requiredFields = mode === 'minimal' ? minimalFields : fullFields;
+        
+        if (validateForm(activeInput, requiredFields)) {
+            submitPrediction(activeInput, requiredFields);
+        }
+    });
+
+    function validateForm(form, requiredFields) {
+        let isValid = true;
+        requiredFields.forEach(fieldName => {
+            const input = form.querySelector(`[name="${fieldName}"]`);
+            if (!input || !input.value.trim() || (input.type === "number" && isNaN(input.value))) {
+                if (input) input.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                if (input) input.classList.remove('is-invalid');
+            }
+        });
+        if (!isValid) {
+            alert('Please fill in all required fields correctly.');
+        }
+        return isValid;
+    }
+
+    function submitPrediction(form, requiredFields) {
+        const formData = new FormData();
+        formData.append('mode', modeInput.value);
+        requiredFields.forEach(fieldName => {
+            const input = form.querySelector(`[name="${fieldName}"]`);
+            if (input) formData.append(fieldName, input.value);
+        });
+
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok.');
+            return response.json();
+        })
+        .then(displayResults)
+        .catch(error => {
+            console.error('Error during prediction:', error);
+            document.getElementById('errorContainer').textContent = 'An error occurred during prediction. Please try again later.';
+            document.getElementById('errorContainer').style.display = 'block';
+        });
+    }
+
+    newPredictionBtn.addEventListener('click', resetForm);
+
+    clearBtn.addEventListener('click', function () {
+        document.querySelectorAll('input[type="text"], input[type="number"], select').forEach(input => {
+            if (input.tagName === 'SELECT') {
+                input.selectedIndex = 0;
+            } else {
+                input.value = '';
+            }
+            input.classList.remove('is-invalid');
+        });
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('errorContainer').style.display = 'none';
+        document.getElementById('errorContainer').textContent = '';
+    });
+
+    function resetForm() {
+        resultsSection.style.display = 'none';
+        inputSection.style.display = 'block';
+        [minimalInput, fullInput].forEach(form => {
+            form.querySelectorAll('input, select').forEach(input => {
+                input.value = '';
+                input.classList.remove('is-invalid');
+            });
+        });
+        document.getElementById('predictedSpecies').textContent = '';
+        document.getElementById('headImage').style.display = 'none';
+        document.getElementById('bodyImage').style.display = 'none';
+        document.getElementById('noImagesMessage').style.display = 'none';
+    }
+
+    function displayResults(response) {
+        if (response.success) {
+            document.getElementById('predictedSpecies').textContent = response.species;
+            const headImage = document.getElementById('headImage');
+            const bodyImage = document.getElementById('bodyImage');
+            const noImagesMessage = document.getElementById('noImagesMessage');
+
+            if (response.species) {
+                headImage.src = `/static/picture/output/Head/${response.species}_HEAD.png`;
+                bodyImage.src = `/static/picture/output/Body/${response.species}.png`;
+                headImage.style.display = 'inline';
+                bodyImage.style.display = 'inline';
+                noImagesMessage.style.display = 'none';
+            } else {
+                headImage.style.display = 'none';
+                bodyImage.style.display = 'none';
+                noImagesMessage.style.display = 'block';
+            }
+
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('errorContainer').style.display = 'none';
+        } else {
+            document.getElementById('errorContainer').textContent = response.error_message || 'An error occurred during prediction.';
+            document.getElementById('errorContainer').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+        }
+
+        resultsSection.style.display = 'block';
+        inputSection.style.display = 'none';
+    }
+
+    // Initial setup
+    switchToMode('minimal');
+});
+
+document.getElementById('predictionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    var formData = new FormData(this);
+    
+    fetch('/predict', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('predictionResult').textContent = `Predicted Species: ${data.species}`;
+            document.getElementById('probabilityResult').textContent = `Probability: ${(data.probability * 100).toFixed(2)}%`;
+            document.getElementById('results').style.display = 'block';
+        } else {
+            alert('Error: ' + data.error_message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred during prediction.');
+    });
+});
+    </script>
+</body>
+</html>
